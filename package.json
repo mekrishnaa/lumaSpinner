@@ -1,0 +1,55 @@
+{
+  "name": "lumaspinner",
+  "version": "1.0.0",
+  "description": "A framework-independent, platform-independent, responsive loading and progress library for the web. Spinners, skeletons, loaders, progress — independently controlled.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "dev": "vite playground --host",
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "build:playground": "vite build playground --outDir ../dist-playground --emptyOutDir",
+    "test": "vitest run",
+    "test:watch": "vitest --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "spinner", "loader", "loading", "skeleton", "progress",
+    "animation", "typescript", "zero-dependencies",
+    "framework-agnostic", "accessible", "a11y",
+    "page-loader", "container-loader", "inline-loader",
+    "skeleton-loader", "shimmer", "dots", "ring",
+    "pulse", "bars", "wave", "orbit", "square"
+  ],
+  "author": "Krishna Kumar",
+  "license": "MIT",
+  "sideEffects": ["*.css", "./dist/styles.css"],
+  "engines": { "node": ">=18.0.0" },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.2",
+    "vite": "^7.3.6",
+    "vitest": "^3.2.7",
+    "@vitest/ui": "^3.2.7",
+    "jsdom": "^25.0.0",
+    "@vitest/coverage-v8": "^3.2.7"
+  }
+}
+

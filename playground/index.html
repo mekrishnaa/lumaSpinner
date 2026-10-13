@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LumaSpinner — Interactive Playground & Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0b0f19;
+      --bg-card: #111827;
+      --bg-card-hover: #162032;
+      --bg-stage: #080c14;
+      --border: #1f293d;
+      --border-accent: #3730a3;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      --success: #10b981;
+      --error: #ef4444;
+      --warning: #f59e0b;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    body.light {
+      --bg: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f1f5f9;
+      --bg-stage: #f8fafc;
+      --border: #e2e8f0;
+      --border-accent: #c7d2fe;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-glow: rgba(79, 70, 229, 0.15);
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    /* ─── Hero Header ────────────────────────────────────── */
+    .hero {
+      position: relative;
+      padding: 64px 24px 56px;
+      text-align: center;
+      background: radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+      border-bottom: 1px solid var(--border);
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #fff 40%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 14px;
+    }
+    body.light .hero h1 {
+      background: linear-gradient(135deg, #0f172a 40%, #4338ca 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      max-width: 680px;
+      margin: 0 auto 28px;
+      font-size: 1.125rem;
+      color: var(--text-muted);
+    }
+    .tech-badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    .tech-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 6px;
+      color: var(--text-muted);
+    }
+
+    /* ─── Controls Header ────────────────────────────────── */
+    .top-controls {
+      position: fixed;
+      top: 18px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      gap: 10px;
+    }
+    .icon-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.2s;
+    }
+    .icon-btn:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+    .icon-btn--primary {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+    .icon-btn--primary:hover {
+      background: linear-gradient(135deg, #4f46e5, #4338ca);
+      box-shadow: 0 6px 20px var(--primary-glow);
+    }
+
+    /* ─── Layout ─────────────────────────────────────────── */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+    .section {
+      margin-bottom: 72px;
+    }
+    .section-header {
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-size: 1.625rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-subtitle {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ─── Grids ──────────────────────────────────────────── */
+    .grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+    .grid-2 {
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    }
+    .grid-3 {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+
+    /* ─── Cards ──────────────────────────────────────────── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+    .stage {
+      background: var(--bg-stage);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .stage-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .stage-desc {
+      font-size: 0.8125rem;
+      color: var(--text-dim);
+    }
+
+    /* ─── Buttons ────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #ffffff;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      padding: 9px 16px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .btn:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 0 16px var(--primary-glow);
+    }
+    .btn:active {
+      transform: scale(0.98);
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--text-muted);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: #a5b4fc;
+    }
+    body.light .btn-outline {
+      color: var(--primary);
+    }
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+    .btn-danger:hover {
+      background: var(--error);
+      color: white;
+    }
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8125rem;
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ─── Dashboard Panels ───────────────────────────────── */
+    .dashboard-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-height: 240px;
+      overflow: hidden;
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    .panel-content {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .panel-footer {
+      padding: 12px 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      background: rgba(0,0,0,0.1);
+      flex-wrap: wrap;
+    }
+
+    /* ─── Global Configuration Panel ───────────────────────── */
+    .config-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .config-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+    }
+    .config-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .config-field label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .config-field select,
+    .config-field input[type="text"],
+    .config-field input[type="number"] {
+      background: var(--bg-stage);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .config-field select:focus,
+    .config-field input:focus {
+      border-color: var(--primary);
+    }
+    .config-color-picker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .config-color-picker input[type="color"] {
+      -webkit-appearance: none;
+      border: 1px solid var(--border);
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      cursor: pointer;
+      background: none;
+      padding: 0;
+    }
+    .config-color-picker input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+    .config-color-picker input[type="color"]::-webkit-color-swatch {
+      border: none;
+      border-radius: 6px;
+    }
+    .config-color-picker input[type="text"] {
+      flex: 1;
+    }
+    .config-toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding-top: 8px;
+    }
+    .config-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: var(--text);
+    }
+    .config-toggle input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .config-actions-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .config-status-badge {
+      font-size: 0.8125rem;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+    .duration-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .duration-chip {
+      background: var(--bg-stage);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 9999px;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .duration-chip:hover {
+      border-color: var(--primary);
+      color: var(--text);
+    }
+    .duration-chip.active {
+      background: rgba(99, 102, 241, 0.2);
+      border-color: var(--primary);
+      color: #a5b4fc;
+    }
+
+    /* ─── Console / Event Log ────────────────────────────── */
+    .console-box {
+      background: #050811;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8125rem;
+      min-height: 140px;
+      max-height: 240px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .log-line {
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+    }
+    .log-time { color: var(--text-dim); }
+    .log-event { font-weight: 600; }
+    .log-event.start { color: #818cf8; }
+    .log-event.stop { color: #f43f5e; }
+    .log-event.update { color: #38bdf8; }
+    .log-event.success { color: #34d399; }
+    .log-event.error { color: #f87171; }
+    .log-msg { color: var(--text-muted); }
+
+    /* ─── Code Snippets ──────────────────────────────────── */
+    .code-box {
+      background: #080d1a;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8125rem;
+      color: #cbd5e1;
+      overflow-x: auto;
+      line-height: 1.7;
+      white-space: pre;
+    }
+    .kw { color: #c084fc; font-weight: 600; }
+    .str { color: #86efac; }
+    .fn { color: #93c5fd; }
+    .prop { color: #fde047; }
+    .comment { color: #64748b; font-style: italic; }
+
+    /* ─── Inline Examples ────────────────────────────────── */
+    .inline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .inline-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* ─── Modals ─────────────────────────────────────────── */
+    .luma-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(3, 7, 18, 0.75);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: modalFadeIn 0.2s ease-out;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .luma-modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+    }
+    .luma-modal-card--lg {
+      max-width: 800px;
+    }
+    .luma-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+    }
+    .luma-modal-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .luma-modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+    .luma-modal-close:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .luma-modal-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .code-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: -10px;
+    }
+    .code-lang-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .modal-tips {
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .modal-tips b {
+      color: var(--text);
+    }
+    .setup-step {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .setup-step-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    .setup-step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+    .tab-nav {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: -8px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .tab-btn.active {
+      color: var(--primary);
+      background: rgba(99, 102, 241, 0.12);
+    }
+  </style>
+</head>
+<body>
+  <div class="top-controls">
+    <button class="icon-btn icon-btn--primary" id="btn-open-setup">🚀 Quick Setup & Installation</button>
+    <button class="icon-btn" id="theme-toggle">🌓 Theme</button>
+  </div>
+
+  <header class="hero">
+    <div class="badge-pill">✨ Framework Agnostic · Zero Dependencies · Accessible</div>
+    <h1>LumaSpinner</h1>
+    <p>A reactive, platform-independent loading UI and skeleton library with independent ID management and multi-scope isolation.</p>
+    <div class="tech-badges">
+      <span class="tech-tag">⚡ 0 Runtime Deps</span>
+      <span class="tech-tag">📘 100% TypeScript</span>
+      <span class="tech-tag">♿ WCAG / ARIA-Busy Ready</span>
+      <span class="tech-tag">🎨 29 Built-in Loaders &amp; Mini-Game</span>
+      <span class="tech-tag">💀 Skeletons & Shimmer</span>
+      <span class="tech-tag">🔒 Multi-Scope Isolation</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ── 0. Global Configuration Engine ────────────────────────── -->
+    <section class="section" id="section-global-config">
+      <div class="section-header">
+        <h2 class="section-title">⚙️ App-wide Global Configuration</h2>
+        <p class="section-subtitle">Set global defaults once via <code>spinner.configure({ ... })</code>. Every loader launched with <code>spinner.start()</code> inherits these settings without duplicate parameters.</p>
+      </div>
+
+      <div class="config-card">
+        <div class="config-grid">
+          <div class="config-field">
+            <label for="cfg-type">Default Loader Type</label>
+            <select id="cfg-type">
+              <option value="ring" selected>Ring (Classic)</option>
+              <option value="circle">Circle (12-dot circular bounce wave)</option>
+              <option value="circular">Circular (Material Design arc dash spin)</option>
+              <option value="dots">Dots (3 bouncing dots)</option>
+              <option value="pulse">Pulse (Scale &amp; fade)</option>
+              <option value="bars">Bars (Equalizer)</option>
+              <option value="wave">Wave (Ripple)</option>
+              <option value="orbit">Orbit (Planetary)</option>
+              <option value="square">Square (3D fold)</option>
+              <option value="dual-ring">Dual-Ring (Loading.io / React-Spinners)</option>
+              <option value="ripple">Ripple (Concentric water ripples)</option>
+              <option value="cube-grid">Cube-Grid (SpinKit 3x3 wave)</option>
+              <option value="roller">Roller (8 trailing orbital dots)</option>
+              <option value="fading-circle">Fading-Circle (iOS 12-segment clock)</option>
+              <option value="chasing-dots">Chasing-Dots (Double orbital chase)</option>
+              <option value="hourglass">Hourglass (Rotating sand timer)</option>
+              <option value="heart">Heartbeat (Pulsing cardiac rhythm)</option>
+              <option value="infinity">Infinity (Continuous figure-8 loop)</option>
+              <option value="dna">DNA (Double-helix oscillating strand)</option>
+              <option value="wandering-cubes">Wandering-Cubes (SpinKit corner cubes)</option>
+              <option value="folding-cube">Folding-Cube (SpinKit 3D folding origami)</option>
+              <option value="atom">Atom (Orbital electrons around nucleus)</option>
+              <option value="pacman">Pacman (Classic arcade chomp &amp; dots)</option>
+              <option value="clock">Clock (Analogue hour &amp; minute hands)</option>
+              <option value="rotating-plane">Rotating-Plane (SpinKit 3D flip card)</option>
+              <option value="newton-cradle">Newton-Cradle (Momentum pendulum swing)</option>
+              <option value="hash">Hash (Interlocking shifting # grid)</option>
+              <option value="interactive">Interactive (Bubble-Pop Mini Game 🎮)</option>
+              <option value="skeleton">Skeleton (Shimmer)</option>
+            </select>
+          </div>
+
+          <div class="config-field">
+            <label for="cfg-size">Default Size</label>
+            <select id="cfg-size">
+              <option value="small">Small (20px)</option>
+              <option value="medium" selected>Medium (36px)</option>
+              <option value="large">Large (56px)</option>
+              <option value="48">Custom 48px</option>
+            </select>
+          </div>
+
+          <div class="config-field">
+            <label for="cfg-speed">Default Speed</label>
+            <select id="cfg-speed">
+              <option value="fast">Fast (0.6s - 0.8s)</option>
+              <option value="normal" selected>Normal (1.0s - 1.2s)</option>
+              <option value="slow">Slow (1.6s - 2.0s)</option>
+            </select>
+          </div>
+
+          <div class="config-field">
+            <label for="cfg-color">Default Accent Color</label>
+            <div class="config-color-picker">
+              <input type="color" id="cfg-color-picker" value="#6366f1">
+              <input type="text" id="cfg-color" value="#6366f1">
+            </div>
+          </div>
+
+          <div class="config-field">
+            <label for="cfg-text-color">Default Text Color</label>
+            <div class="config-color-picker">
+              <input type="color" id="cfg-text-color-picker" value="#cbd5e1">
+              <input type="text" id="cfg-text-color" value="" placeholder="currentColor / auto">
+            </div>
+          </div>
+
+          <div class="config-field">
+            <label for="cfg-text">Default Loading Text</label>
+            <input type="text" id="cfg-text" placeholder="e.g. Loading application..." value="Loading application...">
+          </div>
+
+          <div class="config-field">
+            <label for="cfg-duration">Auto-Dismiss Duration (ms)</label>
+            <input type="number" id="cfg-duration" placeholder="0 = infinite / manual stop" value="2500" min="0" step="500">
+          </div>
+
+          <div class="config-field">
+            <label for="cfg-delay">Start Delay (ms)</label>
+            <input type="number" id="cfg-delay" placeholder="0 = instant" value="0" min="0" step="100">
+          </div>
+
+          <div class="config-field">
+            <label for="cfg-theme">Default Theme</label>
+            <select id="cfg-theme">
+              <option value="auto" selected>Auto (System dark/light)</option>
+              <option value="dark">Dark Theme</option>
+              <option value="light">Light Theme</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="config-toggle-row">
+          <label class="config-toggle">
+            <input type="checkbox" id="cfg-overlay" checked>
+            <span>Backdrop Overlay &amp; Blur</span>
+          </label>
+          <label class="config-toggle">
+            <input type="checkbox" id="cfg-prevent">
+            <span>Prevent User Interaction</span>
+          </label>
+        </div>
+
+        <div class="config-actions-bar">
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <button class="btn" id="btn-apply-config">💾 Apply Global Config</button>
+            <button class="btn btn-secondary" id="btn-test-config">▶ Test (spinner.start())</button>
+            <button class="btn btn-danger" id="btn-stop-config">⏹ Stop (spinner.stop())</button>
+            <button class="btn btn-secondary" id="btn-reset-config">↺ Reset Defaults</button>
+          </div>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <span class="config-status-badge" id="cfg-status-badge">✓ Active: ring · medium · #6366f1</span>
+            <button class="btn btn-outline" id="btn-code-config">&lt;/&gt; Code</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 1. Loader Types Showcase ──────────────────────────────── -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">🎨 Built-in Loader Types</h2>
+        <p class="section-subtitle">Pure CSS accelerated loaders with configurable size, color, speed, and reduced-motion fallback.</p>
+      </div>
+      <div class="grid" id="loaders-grid"></div>
+    </section>
+
+    <!-- ── 2. Scopes & Isolation ─────────────────────────────────── -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">🛡️ Scope Isolation (Page vs. Container vs. Inline)</h2>
+        <p class="section-subtitle">Container-scoped loaders never bleed out of their target boundaries. Each panel can be loaded independently.</p>
+      </div>
+
+      <!-- ── Whole Screen Page Spinner Controller ────────────────── -->
+      <div class="config-card" style="margin-bottom: 28px; border-left: 4px solid var(--primary);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 8px;">
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 8px; margin: 0;">
+              🌐 Whole-Screen Page Spinner (Configurable Duration &amp; Loader)
+            </h3>
+            <p style="font-size: 0.8125rem; color: var(--text-muted); margin: 4px 0 0 0;">
+              Mounts a full-viewport modal overlay (<code>scope: 'page'</code>) with hardware-accelerated backdrop blur and automatic auto-dismiss after the chosen duration.
+            </p>
+          </div>
+          <span class="config-status-badge" id="page-status-badge">Idle</span>
+        </div>
+
+        <div class="config-grid">
+          <div class="config-field">
+            <label for="page-cfg-type">Loader Type</label>
+            <select id="page-cfg-type">
+              <option value="ring" selected>Ring (Classic)</option>
+              <option value="progress-bar">Progress Bar (Linear Glow 📊)</option>
+              <option value="progress-ring">Progress Ring (Apple Radial ⏱️)</option>
+              <option value="progress-steps">Progress Steps (Segmented 🪜)</option>
+              <option value="counter-ring">Counter-Rotating Dual Ring ⚡</option>
+              <option value="infinity">Infinity (Figure-8 Glowing Beam)</option>
+              <option value="heart">Heartbeat (Pulsing Cardiac)</option>
+              <option value="fading-circle">Fading Circle (iOS 12-segment clock)</option>
+              <option value="ripple">Ripple (Concentric Water)</option>
+              <option value="circular">Circular (Material Design arc)</option>
+              <option value="dots">Dots (3 bouncing dots)</option>
+              <option value="pulse">Pulse (Breathing beacon)</option>
+              <option value="bars">Bars (Equalizer)</option>
+              <option value="wave">Wave (Sine wave)</option>
+              <option value="orbit">Orbit (Planetary)</option>
+              <option value="square">Square (3D fold)</option>
+              <option value="dual-ring">Dual-Ring (Opposing dual arcs)</option>
+              <option value="cube-grid">Cube-Grid (3x3 wave)</option>
+              <option value="roller">Roller (8 trailing dots)</option>
+              <option value="chasing-dots">Chasing-Dots (Double orbital)</option>
+              <option value="hourglass">Hourglass (Rotating sand timer)</option>
+              <option value="dna">DNA (Double-helix oscillating strand)</option>
+              <option value="wandering-cubes">Wandering-Cubes (Corner cubes)</option>
+              <option value="folding-cube">Folding-Cube (3D origami)</option>
+              <option value="circle">Circle (12-dot wave bounce)</option>
+              <option value="atom">Atom (Orbital electrons)</option>
+              <option value="pacman">Pacman (Classic arcade chomp)</option>
+              <option value="clock">Clock (Analogue hands)</option>
+              <option value="rotating-plane">Rotating-Plane (3D flip card)</option>
+              <option value="newton-cradle">Newton-Cradle (Pendulum swing)</option>
+              <option value="hash">Hash (Interlocking # grid)</option>
+              <option value="interactive">Interactive (Bubble-Pop Mini Game 🫧)</option>
+              <option value="fidget-spinner">Interactive (Fidget Spinner 🌀)</option>
+              <option value="pong">Interactive (Mini-Pong Arcade 🏓)</option>
+              <option value="tap-burst">Interactive (Cosmic Tap Core 💥)</option>
+            </select>
+          </div>
+
+          <div class="config-field">
+            <label for="page-cfg-duration">Duration (Milliseconds)</label>
+            <input type="number" id="page-cfg-duration" value="3000" min="500" step="500" placeholder="e.g. 3000 (3s)">
+            <div class="duration-chips" id="page-duration-chips">
+              <button type="button" class="duration-chip" data-ms="1000">1s</button>
+              <button type="button" class="duration-chip" data-ms="2000">2s</button>
+              <button type="button" class="duration-chip active" data-ms="3000">3s</button>
+              <button type="button" class="duration-chip" data-ms="5000">5s</button>
+              <button type="button" class="duration-chip" data-ms="8000">8s</button>
+              <button type="button" class="duration-chip" data-ms="0">Manual ⏹</button>
+            </div>
+          </div>
+
+          <div class="config-field">
+            <label for="page-cfg-size">Spinner Size</label>
+            <select id="page-cfg-size">
+              <option value="small">Small (20px)</option>
+              <option value="medium">Medium (36px)</option>
+              <option value="large" selected>Large (56px)</option>
+              <option value="72">Extra Large (72px)</option>
+            </select>
+          </div>
+
+          <div class="config-field">
+            <label for="page-cfg-color">Loader Color</label>
+            <div class="config-color-picker">
+              <input type="color" id="page-cfg-color-picker" value="#6366f1">
+              <input type="text" id="page-cfg-color" value="#6366f1">
+            </div>
+          </div>
+
+          <div class="config-field">
+            <label for="page-cfg-text-color">Text Color</label>
+            <div class="config-color-picker">
+              <input type="color" id="page-cfg-text-color-picker" value="#cbd5e1">
+              <input type="text" id="page-cfg-text-color" value="#cbd5e1" placeholder="e.g. #cbd5e1">
+            </div>
+          </div>
+
+          <div class="config-field" style="grid-column: 1 / -1;">
+            <label for="page-cfg-text">Loading Text</label>
+            <input type="text" id="page-cfg-text" value="Loading application... please wait">
+          </div>
+        </div>
+
+        <div class="config-toggle-row">
+          <label class="config-toggle">
+            <input type="checkbox" id="page-cfg-overlay" checked>
+            <span>Backdrop Overlay &amp; Blur</span>
+          </label>
+          <label class="config-toggle">
+            <input type="checkbox" id="page-cfg-prevent" checked>
+            <span>Prevent User Interaction (Modal block)</span>
+          </label>
+          <label class="config-toggle">
+            <input type="checkbox" id="page-cfg-countdown" checked>
+            <span>Live Countdown in Text (e.g. "closing in 2s")</span>
+          </label>
+        </div>
+
+        <div class="config-actions-bar">
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <button class="btn" id="btn-trigger-page-duration">
+              🚀 Trigger Whole-Screen Spinner
+            </button>
+            <button class="btn btn-danger" id="btn-stop-page-duration">
+              ⏹ Stop Early
+            </button>
+          </div>
+          <button class="btn btn-outline" id="btn-code-page-duration">
+            &lt;/&gt; Code
+          </button>
+        </div>
+      </div>
+
+      <div class="btn-group" style="margin-bottom: 24px;">
+        <button class="btn btn-secondary" id="btn-load-all">⚡ Trigger All 3 Panels Concurrently</button>
+        <button class="btn btn-danger" id="btn-stop-all">🛑 Stop All Running</button>
+      </div>
+
+      <div class="grid-3">
+        <!-- Panel A -->
+        <div class="dashboard-panel" id="panel-users">
+          <div class="panel-header">
+            <span>👥 User Directory</span>
+            <span style="font-size: 0.75rem; color: var(--text-dim);">#users</span>
+          </div>
+          <div class="panel-content">
+            <h4 style="font-size: 0.95rem;">Active Users (24)</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Loaded from /api/users. Skeletons reserve layout space without causing visual shift.</p>
+          </div>
+          <div class="panel-footer">
+            <button class="btn btn-sm" id="btn-panel-users">Load Skeleton</button>
+            <button class="btn btn-outline btn-sm" id="btn-code-users">&lt;/&gt; Code</button>
+            <button class="btn btn-secondary btn-sm" id="btn-panel-users-stop">Stop</button>
+          </div>
+        </div>
+
+        <!-- Panel B -->
+        <div class="dashboard-panel" id="panel-analytics">
+          <div class="panel-header">
+            <span>📊 Live Analytics</span>
+            <span style="font-size: 0.75rem; color: var(--text-dim);">#analytics</span>
+          </div>
+          <div class="panel-content">
+            <h4 style="font-size: 0.95rem;">Real-time Ingestion</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Processes streaming telemetry with custom pulsing or bars loader.</p>
+          </div>
+          <div class="panel-footer">
+            <button class="btn btn-sm" id="btn-panel-analytics">Load Bars</button>
+            <button class="btn btn-outline btn-sm" id="btn-code-analytics">&lt;/&gt; Code</button>
+            <button class="btn btn-secondary btn-sm" id="btn-panel-analytics-stop">Stop</button>
+          </div>
+        </div>
+
+        <!-- Panel C -->
+        <div class="dashboard-panel" id="panel-orders">
+          <div class="panel-header">
+            <span>📦 Order Stream</span>
+            <span style="font-size: 0.75rem; color: var(--text-dim);">#orders</span>
+          </div>
+          <div class="panel-content">
+            <h4 style="font-size: 0.95rem;">Pending Deliveries</h4>
+            <p style="font-size: 0.8125rem; color: var(--text-muted);">Simulated network call with loading text and custom accent color.</p>
+          </div>
+          <div class="panel-footer">
+            <button class="btn btn-sm" id="btn-panel-orders">Load Orbit</button>
+            <button class="btn btn-outline btn-sm" id="btn-code-orders">&lt;/&gt; Code</button>
+            <button class="btn btn-secondary btn-sm" id="btn-panel-orders-stop">Stop</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 3. Skeleton Variants ──────────────────────────────────── -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">💀 Responsive Skeleton Layouts</h2>
+        <p class="section-subtitle">Content-aware placeholder geometries with smooth hardware-accelerated shimmer effects.</p>
+      </div>
+      <div class="grid-2" id="skeletons-grid"></div>
+    </section>
+
+    <!-- ── 4. Inline & Buttons ───────────────────────────────────── -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">🔘 Inline Button & Action Spinners</h2>
+        <p class="section-subtitle">No overlay, no pointer-blocking — perfectly embeds into button labels and status badges.</p>
+      </div>
+      <div class="inline-card">
+        <div class="inline-item">
+          <button class="btn" id="btn-inline-submit">
+            <span>Save Changes</span>
+            <span id="target-inline-submit"></span>
+          </button>
+          <button class="btn btn-sm btn-outline" id="btn-code-inline-btn">&lt;/&gt; Code</button>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Transitions to Success state upon completion.</span>
+        </div>
+
+        <div class="inline-item">
+          <button class="btn btn-secondary" id="btn-inline-sync">
+            <span>Sync Cloud Data</span>
+            <span id="target-inline-sync"></span>
+          </button>
+          <button class="btn btn-sm btn-outline" id="btn-code-inline-sync">&lt;/&gt; Code</button>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Inline dots indicator with dynamic text updates.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 5. Promise Wrap API & Async ───────────────────────────── -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">🔄 Automatic Lifecycle via Promise Wrap</h2>
+        <p class="section-subtitle">Wrap any asynchronous function to automatically start and stop spinners on both success and rejection.</p>
+      </div>
+      <div class="grid-2">
+        <div class="dashboard-panel" id="panel-wrap-demo">
+          <div class="panel-header">
+            <span>⚡ Wrapped Async Fetch</span>
+          </div>
+          <div class="panel-content">
+            <p style="font-size: 0.875rem; color: var(--text-muted);">Click below to run a 2.5s simulated async pipeline wrapped in <code>spinner.wrap(...)</code>.</p>
+            <div id="wrap-result" style="font-size: 0.85rem; color: var(--primary); font-weight: 600;"></div>
+          </div>
+          <div class="panel-footer">
+            <button class="btn btn-sm" id="btn-trigger-wrap">Execute Wrapped Task</button>
+            <button class="btn btn-outline btn-sm" id="btn-code-wrap">&lt;/&gt; Code</button>
+          </div>
+        </div>
+
+        <div class="code-box"><span class="kw">const</span> result = <span class="kw">await</span> spinner.<span class="fn">wrap</span>(
+  <span class="str">'fetch-data'</span>,
+  <span class="kw">async</span> () => {
+    <span class="kw">const</span> res = <span class="kw">await</span> <span class="fn">fetch</span>(<span class="str">'/api/data'</span>);
+    <span class="kw">return</span> res.<span class="fn">json</span>();
+  },
+  {
+    scope: <span class="str">'container'</span>,
+    container: <span class="str">'#panel-wrap-demo'</span>,
+    type: <span class="str">'ring'</span>,
+    text: <span class="str">'Synchronizing with database...'</span>
+  }
+);</div>
+      </div>
+    </section>
+
+    <!-- ── 6. Event Stream ───────────────────────────────────────── -->
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">📡 Real-Time Lifecycle Event Stream</h2>
+        <p class="section-subtitle">Global event bus listening to <code>start</code>, <code>stop</code>, <code>update</code>, <code>success</code>, and <code>error</code>.</p>
+      </div>
+      <div class="console-box" id="console-logs"></div>
+    </section>
+  </main>
+
+  <!-- ═════════════════════════════════════════════════════════════
+       MODAL 1: Initial Setup & Installation
+       ═════════════════════════════════════════════════════════════ -->
+  <div class="luma-modal-backdrop" id="setup-modal" style="display: none;">
+    <div class="luma-modal-card luma-modal-card--lg">
+      <div class="luma-modal-header">
+        <div class="luma-modal-title">🚀 Getting Started with LumaSpinner</div>
+        <button class="luma-modal-close" id="setup-modal-close">&times;</button>
+      </div>
+      <div class="luma-modal-body">
+        <!-- Step 1: Install -->
+        <div class="setup-step">
+          <div class="setup-step-head">
+            <span class="setup-step-num">1</span>
+            <span>Install via Package Manager</span>
+          </div>
+          <div class="code-actions">
+            <span class="code-lang-tag">BASH / TERMINAL</span>
+            <button class="btn btn-sm btn-outline" id="btn-copy-install">📋 Copy Command</button>
+          </div>
+          <pre class="code-box">npm install lumaspinner</pre>
+        </div>
+
+        <!-- Step 2: Import -->
+        <div class="setup-step">
+          <div class="setup-step-head">
+            <span class="setup-step-num">2</span>
+            <span>Import Module & Styles</span>
+          </div>
+          <pre class="code-box"><span class="kw">import</span> { spinner } <span class="kw">from</span> <span class="str">'lumaspinner'</span>;
+<span class="kw">import</span> <span class="str">'lumaspinner/styles.css'</span>; <span class="comment">// Include modern CSS tokens & animations</span></pre>
+        </div>
+
+        <!-- Step 3: Framework Integrations -->
+        <div class="setup-step">
+          <div class="setup-step-head">
+            <span class="setup-step-num">3</span>
+            <span>Framework Integration Examples</span>
+          </div>
+          <div class="tab-nav">
+            <button class="tab-btn active" data-tab="vanilla">Vanilla JS</button>
+            <button class="tab-btn" data-tab="react">React</button>
+            <button class="tab-btn" data-tab="vue">Vue</button>
+            <button class="tab-btn" data-tab="angular">Angular</button>
+          </div>
+
+          <div id="tab-content-vanilla">
+            <pre class="code-box"><span class="comment">// Simple One-Liner</span>
+<span class="kw">const</span> id = spinner.<span class="fn">start</span>();
+
+<span class="comment">// Later when async task finishes</span>
+spinner.<span class="fn">stop</span>(id);</pre>
+          </div>
+
+          <div id="tab-content-react" style="display: none;">
+            <pre class="code-box"><span class="kw">import</span> { useEffect, useRef } <span class="kw">from</span> <span class="str">'react'</span>;
+<span class="kw">import</span> { spinner } <span class="kw">from</span> <span class="str">'lumaspinner'</span>;
+<span class="comment">// No CSS import needed! Auto-injects with strict CSP compliance.</span>
+
+<span class="kw">export function</span> <span class="fn">UserProfile</span>({ loading }) {
+  <span class="kw">const</span> containerRef = <span class="fn">useRef</span>(<span class="kw">null</span>);
+
+  <span class="fn">useEffect</span>(() => {
+    <span class="kw">if</span> (loading && containerRef.current) {
+      spinner.<span class="fn">start</span>({
+        id: <span class="str">'profile-loader'</span>,
+        scope: <span class="str">'container'</span>,
+        container: containerRef.current,
+        type: <span class="str">'skeleton'</span>,
+        skeleton: { variant: <span class="str">'profile'</span>, shimmer: <span class="kw">true</span> },
+      });
+    } <span class="kw">else</span> {
+      spinner.<span class="fn">stop</span>(<span class="str">'profile-loader'</span>);
+    }
+    <span class="kw">return</span> () => spinner.<span class="fn">stop</span>(<span class="str">'profile-loader'</span>);
+  }, [loading]);
+
+  <span class="kw">return</span> &lt;<span class="prop">div</span> ref={containerRef}&gt;...&lt;/<span class="prop">div</span>&gt;;
+}</pre>
+          </div>
+
+          <div id="tab-content-vue" style="display: none;">
+            <pre class="code-box">&lt;<span class="prop">script</span> setup&gt;
+<span class="kw">import</span> { onMounted, onUnmounted, ref } <span class="kw">from</span> <span class="str">'vue'</span>;
+<span class="kw">import</span> { spinner } <span class="kw">from</span> <span class="str">'lumaspinner'</span>;
+<span class="comment">// No CSS import needed! Auto-injects with strict CSP compliance.</span>
+
+<span class="kw">const</span> panel = <span class="fn">ref</span>(<span class="kw">null</span>);
+
+<span class="fn">onMounted</span>(<span class="kw">async</span> () => {
+  <span class="kw">await</span> spinner.<span class="fn">wrap</span>(<span class="str">'orders'</span>, fetchOrders, {
+    scope: <span class="str">'container'</span>,
+    container: panel.value,
+    type: <span class="str">'bars'</span>
+  });
+});
+&lt;/<span class="prop">script</span>&gt;</pre>
+          </div>
+
+          <div id="tab-content-angular" style="display: none;">
+            <pre class="code-box"><span class="kw">import</span> { Component, OnInit, OnDestroy, ElementRef, ViewChild } <span class="kw">from</span> <span class="str">'@angular/core'</span>;
+<span class="kw">import</span> { spinner } <span class="kw">from</span> <span class="str">'lumaspinner'</span>;
+
+@<span class="fn">Component</span>({ ... })
+<span class="kw">export class</span> <span class="prop">DashboardComponent</span> <span class="kw">implements</span> <span class="prop">OnInit</span>, <span class="prop">OnDestroy</span> {
+  @<span class="fn">ViewChild</span>(<span class="str">'panel'</span>) panel!: <span class="prop">ElementRef</span>;
+
+  <span class="fn">ngOnInit</span>() {
+    spinner.<span class="fn">start</span>({
+      id: <span class="str">'angular-dashboard'</span>,
+      scope: <span class="str">'container'</span>,
+      container: <span class="kw">this</span>.panel.nativeElement,
+      type: <span class="str">'skeleton'</span>,
+      skeleton: { variant: <span class="str">'table'</span>, rows: <span class="prop">5</span> }
+    });
+  }
+
+  <span class="fn">ngOnDestroy</span>() {
+    spinner.<span class="fn">destroy</span>(<span class="str">'angular-dashboard'</span>);
+  }
+}</pre>
+          </div>
+        </div>
+
+        <div class="modal-tips">
+          💡 <b>Pro Tip:</b> LumaSpinner uses pure DOM APIs with <b>0 runtime dependencies</b>. It doesn't rely on virtual DOM adapters and works out-of-the-box in microfrontends, WebComponents, and server-side rendered apps.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════════════════
+       MODAL 2: Dynamic Code Implementation Viewer
+       ═════════════════════════════════════════════════════════════ -->
+  <div class="luma-modal-backdrop" id="code-modal" style="display: none;">
+    <div class="luma-modal-card">
+      <div class="luma-modal-header">
+        <div class="luma-modal-title" id="code-modal-title">&lt;/&gt; Implementation Code</div>
+        <button class="luma-modal-close" id="code-modal-close">&times;</button>
+      </div>
+      <div class="luma-modal-body">
+        <div class="code-actions">
+          <span class="code-lang-tag">TYPESCRIPT / ES MODULES</span>
+          <button class="btn btn-sm btn-outline" id="code-modal-copy">📋 Copy Code</button>
+        </div>
+        <pre class="code-box" id="code-modal-content"></pre>
+        <div class="modal-tips" id="code-modal-tips"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./main.ts"></script>
+</body>
+</html>
