@@ -47,3 +47,4 @@ export const sphere3dLoader: LoaderDefinition = {
     setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed) });
   },
 };
+

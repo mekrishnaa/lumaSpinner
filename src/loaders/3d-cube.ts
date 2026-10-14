@@ -45,3 +45,4 @@ export const cube3dLoader: LoaderDefinition = {
     setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed) });
   },
 };
+
