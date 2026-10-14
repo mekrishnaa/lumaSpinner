@@ -119,7 +119,7 @@ window.addEventListener('keydown', (e) => {
 });
 
 // ─── Code Snippets Data ────────────────────────────────────────────────────
-const LOADER_SNIPPETS: Record<LoaderType, { code: string; tips: string }> = {
+const LOADER_SNIPPETS: Partial<Record<LoaderType, { code: string; tips: string }>> = {
   ring: {
     code: `import { spinner } from 'lumaspinner';
 import 'lumaspinner/styles.css';
@@ -985,6 +985,96 @@ const id = spinner.start({
 });`,
     tips: '💥 Alias for tap-burst cosmic clicker loader.',
   },
+  '3d-cube': {
+    code: `import { spinner } from 'lumaspinner';
+import 'lumaspinner/styles.css';
+
+// 1. Start 3D isometric cube loader with 6 illuminated faces
+const id = spinner.start({
+  id: '3d-cube-loader',
+  type: '3d-cube',
+  size: 'medium',       // 'small' | 'medium' | 'large' | number (px)
+  color: '#6366f1',     // Face border & translucent glass tint
+  speed: 'normal',      // 3D rotation cycle speed
+  text: 'Rendering 3D model...',
+});
+
+// 2. Stop when task is done
+spinner.stop(id);`,
+    tips: '🧊 <b>Best For:</b> CAD software, 3D graphics, WebGL engines, architectural rendering, and Three.js viewports.',
+  },
+  '3d-sphere': {
+    code: `import { spinner } from 'lumaspinner';
+import 'lumaspinner/styles.css';
+
+// 1. Start 3D orbital sphere gyroscope loader
+const id = spinner.start({
+  id: '3d-sphere-loader',
+  type: '3d-sphere',
+  size: 'large',
+  color: '#3b82f6',     // Ring glow and core radiance
+  speed: 'normal',
+  text: 'Calculating global coordinates...',
+});
+
+// 2. Stop when task completes
+spinner.stop(id);`,
+    tips: '🌐 <b>Best For:</b> Geospatial mapping, aerospace telemetries, global network sync, and cryptographic gyroscopes.',
+  },
+  '3d-helix': {
+    code: `import { spinner } from 'lumaspinner';
+import 'lumaspinner/styles.css';
+
+// 1. Start 3D spiraling DNA helix strand loader
+const id = spinner.start({
+  id: '3d-helix-loader',
+  type: '3d-helix',
+  size: 'medium',
+  color: '#10b981',     // Glowing spatial node spheres
+  speed: 'normal',
+  text: 'Sequencing genomics data...',
+});
+
+// 2. Stop when done
+spinner.stop(id);`,
+    tips: '🧬 <b>Best For:</b> Bioinformatics, genetics sequencing, biotech dashboards, and complex data pipeline synthesis.',
+  },
+  '3d-pyramid': {
+    code: `import { spinner } from 'lumaspinner';
+import 'lumaspinner/styles.css';
+
+// 1. Start 3D tumbling pyramid / tetrahedron loader
+const id = spinner.start({
+  id: '3d-pyramid-loader',
+  type: '3d-pyramid',
+  size: 'medium',
+  color: '#f59e0b',     // Glass-faceted triangle sides
+  speed: 'normal',
+  text: 'Constructing geometry...',
+});
+
+// 2. Stop when done
+spinner.stop(id);`,
+    tips: '🔺 <b>Best For:</b> Geometric design tools, computational math algorithms, game level geometry, and physics simulations.',
+  },
+  '3d-torus': {
+    code: `import { spinner } from 'lumaspinner';
+import 'lumaspinner/styles.css';
+
+// 1. Start 3D tumbling wireframe torus donut loader
+const id = spinner.start({
+  id: '3d-torus-loader',
+  type: '3d-torus',
+  size: 'medium',
+  color: '#ec4899',     // Glowing radial wireframe rings
+  speed: 'normal',
+  text: 'Compiling particle ring...',
+});
+
+// 2. Stop when done
+spinner.stop(id);`,
+    tips: '🍩 <b>Best For:</b> Quantum physics dashboards, particle accelerator telemetry, high-tech cybernetics, and crypto nodes.',
+  },
 };
 
 // ─── 1. Loader Types Showcase ──────────────────────────────────────────────
@@ -1024,6 +1114,11 @@ const LOADERS: { type: LoaderType; title: string; desc: string }[] = [
   { type: 'fidget-spinner', title: 'Interactive Fidget Spinner 🌀', desc: 'Flickable 3-blade fidget spinner with realistic inertia momentum, touch swipes, and live RPM counter' },
   { type: 'pong', title: 'Interactive Mini-Pong 🏓', desc: 'Retro arcade paddle bounce game with live rally scoring and smart autoplay idle tracking' },
   { type: 'tap-burst', title: 'Interactive Cosmic Tap 💥', desc: 'Clickable energy reactor core with expanding shockwave ripples, combo streaks, and 100% Supernova burst' },
+  { type: '3d-cube', title: '3D Cube (Isometric) 🧊', desc: '3D isometric rotating wireframe cube with 6 glass-faceted faces and dynamic illumination' },
+  { type: '3d-sphere', title: '3D Sphere Gyroscope 🌐', desc: 'Orbital celestial gyroscope with 4 intersecting 3D rings and radiant luminous core' },
+  { type: '3d-helix', title: '3D DNA Helix Strand 🧬', desc: 'Double spiraling DNA strand with 8 spatial nodes revolving along a cylindrical 3D trajectory' },
+  { type: '3d-pyramid', title: '3D Tumbling Pyramid 🔺', desc: '3D perspective tetrahedron/pyramid tumbling with translucent glass-faceted triangle faces' },
+  { type: '3d-torus', title: '3D Wireframe Torus 🍩', desc: 'Continuous tumbling 3D donut with 8 radial cross-section rings oriented in space' },
   { type: 'skeleton', title: 'Skeleton Loader', desc: 'Layout-preserving placeholder with smooth shimmer animation' },
 ];
 
@@ -1130,7 +1225,10 @@ LOADERS.forEach(({ type, title, desc }) => {
   btnCode.className = 'btn btn-secondary btn-sm';
   btnCode.textContent = '</> Code';
   btnCode.onclick = () => {
-    const item = LOADER_SNIPPETS[type];
+    const item = LOADER_SNIPPETS[type] ?? {
+      code: `import { spinner } from 'lumaspinner';\nimport 'lumaspinner/styles.css';\n\nconst id = spinner.start({ type: '${type}' });`,
+      tips: `Implementation for ${title}`,
+    };
     showCodeModal(`${title} Implementation`, item.code, item.tips);
   };
 

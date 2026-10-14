@@ -35,6 +35,11 @@ import { progressStepsLoader } from './progress-steps.js';
 import { fidgetSpinnerLoader } from './fidget-spinner.js';
 import { pongLoader } from './pong.js';
 import { tapBurstLoader } from './tap-burst.js';
+import { cube3dLoader } from './3d-cube.js';
+import { sphere3dLoader } from './3d-sphere.js';
+import { helix3dLoader } from './3d-helix.js';
+import { pyramid3dLoader } from './3d-pyramid.js';
+import { torus3dLoader } from './3d-torus.js';
 
 const loaderRegistry = new Map<string, LoaderDefinition>([
   ['ring', ringLoader],
@@ -88,6 +93,21 @@ const loaderRegistry = new Map<string, LoaderDefinition>([
   ['tap-burst', tapBurstLoader],
   ['click-blaster', tapBurstLoader],
   ['energy-orb', tapBurstLoader],
+  ['3d-cube', cube3dLoader],
+  ['cube-3d', cube3dLoader],
+  ['cube3d', cube3dLoader],
+  ['3d-sphere', sphere3dLoader],
+  ['sphere-3d', sphere3dLoader],
+  ['sphere3d', sphere3dLoader],
+  ['3d-helix', helix3dLoader],
+  ['helix-3d', helix3dLoader],
+  ['helix3d', helix3dLoader],
+  ['3d-pyramid', pyramid3dLoader],
+  ['pyramid-3d', pyramid3dLoader],
+  ['pyramid3d', pyramid3dLoader],
+  ['3d-torus', torus3dLoader],
+  ['torus-3d', torus3dLoader],
+  ['torus3d', torus3dLoader],
 ]);
 
 export function getLoader(type: LoaderType | string): LoaderDefinition {

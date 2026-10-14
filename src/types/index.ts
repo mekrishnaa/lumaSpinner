@@ -51,7 +51,22 @@ export type LoaderType =
   | 'bounce-game'
   | 'tap-burst'
   | 'click-blaster'
-  | 'energy-orb';
+  | 'energy-orb'
+  | '3d-cube'
+  | 'cube-3d'
+  | 'cube3d'
+  | '3d-sphere'
+  | 'sphere-3d'
+  | 'sphere3d'
+  | '3d-helix'
+  | 'helix-3d'
+  | 'helix3d'
+  | '3d-pyramid'
+  | 'pyramid-3d'
+  | 'pyramid3d'
+  | '3d-torus'
+  | 'torus-3d'
+  | 'torus3d';
 
 export type SpinnerSize = 'small' | 'medium' | 'large' | number;
 

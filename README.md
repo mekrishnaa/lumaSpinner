@@ -218,6 +218,11 @@ spinner.stop('users'); // orders and profile remain actively loading!
 | `fidget-spinner` | Interactive Fidget Spinner 🌀 | Inertia physics & RPM meter | Long downloads, stress-relief screens, video renders |
 | `pong` | Interactive Mini-Pong Arcade 🏓 | Retro paddle & neon ball bounce | Code compilers, build tasks, shader processing |
 | `tap-burst` | Interactive Cosmic Tap Core 💥 | Shockwave ripples & combo bursts | Cloud provisioning, ML model inference, database sync |
+| `3d-cube` | 3D Isometric Wireframe Cube 🧊 | 3D Geometry / CAD / WebGL | 3D graphics rendering, CAD design, Three.js loading screens |
+| `3d-sphere` | 3D Orbital Sphere Gyroscope 🌐 | Aerospace / Geospatial | Coordinate calculation, cryptographic gyroscopes, global sync |
+| `3d-helix` | 3D Double-Helix DNA Strand 🧬 | Biotech / Genomics | DNA sequencing, scientific computing, molecular data pipelines |
+| `3d-pyramid` | 3D Tumbling Prism Pyramid 🔺 | Math / Computational Geometry | Mesh generation, geometric solvers, physics engines |
+| `3d-torus` | 3D Wireframe Torus Donut 🍩 | Quantum Physics / High-Tech | Particle accelerators, cybernetics, high-tech dashboards |
 | `skeleton` | Layout-Preserving Skeleton | Modern Web (GitHub/Twitter) | Tables, feeds, cards, profile screens |
 
 ---
