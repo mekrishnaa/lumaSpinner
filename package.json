@@ -27,7 +27,8 @@
     "build:playground": "vite build playground --outDir ../dist-playground --emptyOutDir",
     "test": "vitest run",
     "test:watch": "vitest --watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build"
   },
   "keywords": [
     "spinner", "loader", "loading", "skeleton", "progress",
@@ -39,6 +40,14 @@
   ],
   "author": "Krishna Kumar",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mekrishnaa/lumaSpinner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mekrishnaa/lumaSpinner/issues"
+  },
+  "homepage": "https://github.com/mekrishnaa/lumaSpinner#readme",
   "sideEffects": ["*.css", "./dist/styles.css"],
   "engines": { "node": ">=18.0.0" },
   "devDependencies": {
