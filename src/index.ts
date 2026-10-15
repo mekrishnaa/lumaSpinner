@@ -1,7 +1,7 @@
 export { spinner } from './core/spinner-manager.js';
 export { registerLoader, getRegisteredLoaderNames } from './loaders/loader-registry.js';
 export { setConfig as configure, getConfig, resetConfig } from './core/configuration.js';
-export { ensureStylesInjected } from './styles/injector.js';
+export { ensureStylesInjected, ensureLoaderStylesInjected, resetStyleInjection } from './styles/injector.js';
 
 export type {
   SpinnerOptions,

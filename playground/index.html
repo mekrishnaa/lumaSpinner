@@ -1161,10 +1161,10 @@
         <div class="setup-step">
           <div class="setup-step-head">
             <span class="setup-step-num">2</span>
-            <span>Import Module & Styles</span>
+            <span>Import & Use (Zero-Config Styling!)</span>
           </div>
           <pre class="code-box"><span class="kw">import</span> { spinner } <span class="kw">from</span> <span class="str">'lumaspinner'</span>;
-<span class="kw">import</span> <span class="str">'lumaspinner/styles.css'</span>; <span class="comment">// Include modern CSS tokens & animations</span></pre>
+<span class="comment">// ✨ Styles auto-inject into DOM on demand with strict CSP compliance. No CSS import required!</span></pre>
         </div>
 
         <!-- Step 3: Framework Integrations -->
@@ -1177,12 +1177,14 @@
             <button class="tab-btn active" data-tab="vanilla">Vanilla JS</button>
             <button class="tab-btn" data-tab="react">React</button>
             <button class="tab-btn" data-tab="vue">Vue</button>
+            <button class="tab-btn" data-tab="svelte">Svelte</button>
             <button class="tab-btn" data-tab="angular">Angular</button>
+            <button class="tab-btn" data-tab="solid">SolidJS</button>
           </div>
 
           <div id="tab-content-vanilla">
             <pre class="code-box"><span class="comment">// Simple One-Liner</span>
-<span class="kw">const</span> id = spinner.<span class="fn">start</span>();
+const id = spinner.<span class="fn">start</span>();
 
 <span class="comment">// Later when async task finishes</span>
 spinner.<span class="fn">stop</span>(id);</pre>
@@ -1233,6 +1235,26 @@ spinner.<span class="fn">stop</span>(id);</pre>
 &lt;/<span class="prop">script</span>&gt;</pre>
           </div>
 
+          <div id="tab-content-svelte" style="display: none;">
+            <pre class="code-box">&lt;<span class="prop">script</span>&gt;
+<span class="kw">import</span> { onMount } <span class="kw">from</span> <span class="str">'svelte'</span>;
+<span class="kw">import</span> { spinner } <span class="kw">from</span> <span class="str">'lumaspinner'</span>;
+
+<span class="kw">let</span> panelEl;
+
+<span class="fn">onMount</span>(<span class="kw">async</span> () => {
+  <span class="comment">// Automatic promise lifecycle with spinner.wrap:</span>
+  <span class="kw">await</span> spinner.<span class="fn">wrap</span>(fetchData, {
+    container: panelEl,
+    type: <span class="str">'wave'</span>,
+    text: <span class="str">'Syncing feed...'</span>
+  });
+});
+&lt;/<span class="prop">script</span>&gt;
+
+&lt;<span class="prop">div</span> bind:this={panelEl}&gt;...&lt;/<span class="prop">div</span>&gt;</pre>
+          </div>
+
           <div id="tab-content-angular" style="display: none;">
             <pre class="code-box"><span class="kw">import</span> { Component, OnInit, OnDestroy, ElementRef, ViewChild } <span class="kw">from</span> <span class="str">'@angular/core'</span>;
 <span class="kw">import</span> { spinner } <span class="kw">from</span> <span class="str">'lumaspinner'</span>;
@@ -1254,6 +1276,25 @@ spinner.<span class="fn">stop</span>(id);</pre>
   <span class="fn">ngOnDestroy</span>() {
     spinner.<span class="fn">destroy</span>(<span class="str">'angular-dashboard'</span>);
   }
+}</pre>
+          </div>
+
+          <div id="tab-content-solid" style="display: none;">
+            <pre class="code-box"><span class="kw">import</span> { onMount } <span class="kw">from</span> <span class="str">'solid-js'</span>;
+<span class="kw">import</span> { spinner } <span class="kw">from</span> <span class="str">'lumaspinner'</span>;
+
+<span class="kw">export function</span> <span class="fn">FeedCard</span>() {
+  <span class="kw">let</span> containerRef;
+
+  <span class="fn">onMount</span>(<span class="kw">async</span> () => {
+    <span class="kw">await</span> spinner.<span class="fn">wrap</span>(loadFeed, {
+      container: containerRef,
+      type: <span class="str">'skeleton'</span>,
+      skeleton: { variant: <span class="str">'card'</span>, shimmer: <span class="kw">true</span> }
+    });
+  });
+
+  <span class="kw">return</span> &lt;<span class="prop">div</span> ref={containerRef}&gt;...&lt;/<span class="prop">div</span>&gt;;
 }</pre>
           </div>
         </div>

@@ -7,83 +7,147 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-first-blue.svg)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-`lumaspinner` is a lightweight, zero-dependency loading UI library engineered to handle every asynchronous and loading state across modern web platforms. Unlike traditional spinner libraries that only render a single spinning circle, LumaSpinner provides **spinners, animated loaders, wave effects, orbital rings, and responsive skeleton placeholders with shimmer effects** — all controlled through an isolated, ID-driven architecture.
+`lumaspinner` is a lightweight, zero-dependency loading UI library engineered to handle every asynchronous and loading state across modern web platforms. LumaSpinner provides **30+ animated spinners, progress gauges, 3D perspective loaders, interactive mini-games, and responsive skeletons with shimmer effects** — all controlled through an isolated, ID-driven architecture with zero required CSS imports.
 
 ---
 
 ## 🌟 Key Differentiators
 
 - 🚀 **Zero Runtime Dependencies** — Pure DOM APIs and hardware-accelerated CSS animations.
+- ⚡ **Featherweight & Fast** — Only **15.5 KB gzipped** for the full suite, or **< 1 KB** with tree-shaking.
 - 🧩 **100% Framework Agnostic** — Native support for React, Angular, Vue, Svelte, Solid, or Vanilla JS.
 - 🔑 **Unique Identity Registry** — Every spinner is identified by a unique ID (`one ID = one active instance`). No accidental state clashes.
 - 🛡️ **Three Boundary Scopes**:
   - `page` — Viewport-level backdrop overlay and interaction blocking.
   - `container` — Elements are bounded strictly inside their parent container (never leaks out).
   - `inline` — No overlay; integrates seamlessly inside buttons, inputs, and badges.
+- 🎨 **Fully Configurable Loaders** — Every loader supports custom colors, sizes, speeds, themes, text, delays, overlays, and live updates.
 - 💀 **First-Class Skeletons** — 8 responsive skeleton layouts with smooth shimmer animations to prevent layout shifts.
-- 🎨 **8 Built-in Loaders** — Ring, Dots, Pulse, Bars, Wave, Orbit, Square, Skeleton.
+- 🎮 **Playful Mini-Games** — Interactive bubble pops, fidget spinners, and pong mini-games to turn long wait times into delightful user experiences.
 - ♿ **Accessible by Default** — Automatic `role="status"`, `aria-live="polite"`, `aria-busy="true/false"`, and `@media (prefers-reduced-motion: reduce)`.
+- 🔒 **Strict CSP Compliant** — Automatic nonce discovery and CSSOM Constructable Stylesheets.
 - 🔄 **Promise Helpers** — Built-in `spinner.wrap(...)` handles start/stop lifecycles automatically.
 
 ---
 
 ## 📦 Installation
 
+Install with your package manager of choice:
+
 ```bash
+# npm
 npm install lumaspinner
+
+# pnpm
+pnpm add lumaspinner
+
+# yarn
+yarn add lumaspinner
 ```
 
-### ⚡ Zero-Config Quick Start (No CSS Import Needed!)
+---
 
-Styles are **automatically injected into the DOM with zero setup**. You do **not** need to manually import any CSS file!
+## ⚡ Bundle Size & Performance
+
+LumaSpinner uses **on-demand dynamic CSS injection** and **modular subpath exports**:
+
+| Distribution Target | Raw Size | Gzipped | Brotli | Description |
+|---|---|---|---|---|
+| `lumaspinner` (ESM) | **100 KB** | **15.5 KB** | **13.1 KB** | Full suite (all 30+ loaders, skeletons, progress gauges, games, manager) |
+| `lumaspinner/loaders` | **0.82 KB** | **0.37 KB** | **0.33 KB** | Tree-shakeable loader definitions (drops unused loaders down to ~1 KB) |
+| In-DOM Core Styles | **1.4 KB** | — | — | Base layout styles injected once into DOM at runtime |
+| Active Loader Style | **~0.3 KB** | — | — | Injected on-demand **only** for the loader currently in use |
+
+> **No CSS Import Needed**: LumaSpinner automatically injects styles into the document on demand with strict CSP support.
+
+---
+
+## ⚡ Quick Start
 
 ```ts
 import { spinner } from 'lumaspinner';
 
-// 1. Start a spinner — styles auto-inject instantly with strict CSP compliance
+// 1. Start a spinner (zero CSS import needed!)
 const id = spinner.start({
   type: 'ring',
-  text: 'Loading...',
+  text: 'Loading data...',
+  color: '#6366f1',
+  size: 'medium',
 });
 
-// 2. Stop it when your work is finished
+// 2. Stop it when complete
 spinner.stop(id);
 ```
 
-### 🔒 Strict Content Security Policy (CSP) Support
+### 🌲 Tree-Shaking Usage (`lumaspinner/loaders`)
 
-LumaSpinner is engineered to work out of the box in enterprise and banking environments with strict CSP (`style-src 'self'`):
+For minimum bundle size in modern bundlers (Vite, Webpack, Rollup), you can import specific loaders directly:
 
-- **Modern Browsers (CSSOM `adoptedStyleSheets`)**: Uses constructable stylesheets in memory. Because no inline HTML `<style>` string is parsed, browsers **do not block them under `style-src` CSP rules**.
-- **Automatic Nonce Detection**: Falls back to an auto-detected `nonce` from `<meta name="csp-nonce">`, `<script nonce="...">`, or `window.__CSP_NONCE__`.
-- **Explicit Nonce**: Or provide your server nonce once: `spinner.configure({ nonce: 'your-secret-nonce' })`.
-- **Manual CSS Opt-Out**: If your build pipeline prefers static stylesheets:
-  ```ts
-  import { spinner } from 'lumaspinner';
-  import 'lumaspinner/styles.css'; // Optional manual import
+```ts
+import { spinner, registerLoader } from 'lumaspinner';
+import { ringLoader, dotsLoader } from 'lumaspinner/loaders';
 
-  spinner.configure({ injectStyles: false });
-  ```
+// Register only the loaders your app needs
+registerLoader('ring', ringLoader);
+registerLoader('dots', dotsLoader);
+
+spinner.start({ type: 'ring' });
+```
+
+---
+
+## 🎛️ Are All Loaders Configurable?
+
+**Yes! Every loader in LumaSpinner is 100% configurable.** 
+
+You can configure options globally across your whole app, per-instance when starting a spinner, or dynamically on an active spinner in real-time.
+
+### Full Options Matrix:
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `type` | `LoaderType` | `'ring'` | Any of the 30+ built-in loader types |
+| `size` | `'small' \| 'medium' \| 'large' \| number` | `'medium'` (36px) | Preset or exact pixel size (e.g. `size: 48`) |
+| `color` | `string` | `'currentColor'` | Any CSS color (`#6366f1`, `rgb(...)`, `hsl(...)`, or CSS var) |
+| `speed` | `'fast' \| 'normal' \| 'slow'` | `'normal'` | Animation rotation/pulse speed multiplier |
+| `scope` | `'page' \| 'container' \| 'inline'` | `'page'` | Positioning boundary and backdrop scope |
+| `container` | `string \| HTMLElement` | `document.body` | Target selector or DOM node (e.g. `'#my-card'`) |
+| `text` | `string` | `''` | Text displayed alongside the loader |
+| `textColor` | `string` | `color` | Custom color for the text label |
+| `textPosition` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | Position of the text relative to the loader |
+| `theme` | `'auto' \| 'light' \| 'dark'` | `'auto'` | Color mode (respects system dark mode) |
+| `position` | `'center' \| 'top' \| 'right' \| 'bottom' \| 'left'` | `'center'` | Alignment within the container |
+| `overlay` | `boolean \| string \| OverlayOptions` | `false` | Enable backdrop blur/overlay or pass custom color string |
+| `overlayColor` | `string` | `'rgba(255,255,255,0.9)'` | Custom backdrop overlay color |
+| `preventInteraction`| `boolean` | `false` | Block clicks on the underlying page/container |
+| `delay` | `number` | `0` | Delay in ms before mounting (prevents quick flash) |
+| `duration` | `number` | `0` | Auto-dismiss duration in ms (`0` = manual stop) |
+| `minDuration` | `number` | `0` | Minimum display duration in ms to avoid flicker |
+| `skeleton` | `SkeletonOptions` | `{}` | Variant, rows, lines, shimmer, avatar settings |
+| `progress` | `number` | `0` | Progress percentage (`0`–`100`) for gauges |
+| `showProgressText` | `boolean` | `true` | Display tabular numeric percentage |
+| `zIndex` | `number` | `9999` (page) / `10` (container) | Custom CSS z-index stacking layer |
+| `nonce` | `string` | Auto-detected | CSP nonce string for strict enterprise security |
+| `injectStyles` | `boolean` | `true` | Set to `false` if using manual CSS import |
 
 ---
 
 ## 🚀 Examples
 
 ### 1. Minimal One-Liner
-
 ```ts
 const id = spinner.start();
 spinner.stop(id);
 ```
 
-### 2. Full-Page Loading
-
+### 2. Full-Page Loading with Overlay
 ```ts
 spinner.start({
   id: 'app-init',
   scope: 'page',
   type: 'ring',
   text: 'Loading workspace...',
+  color: '#6366f1',
   overlay: true,
   preventInteraction: true,
 });
@@ -93,7 +157,6 @@ spinner.stop('app-init');
 ```
 
 ### 3. Container-Scoped Skeleton (e.g. Dashboard Panel)
-
 ```ts
 spinner.start({
   id: 'users-list',
@@ -108,122 +171,288 @@ spinner.start({
   },
 });
 
-// When fetch completes
 spinner.stop('users-list');
 ```
 
 ### 4. Inline Button Spinner
-
 ```ts
 spinner.start({
   id: 'save-btn-loader',
   scope: 'inline',
-  container: document.querySelector('#save-btn-icon')!,
+  container: document.querySelector('#save-btn')!,
   type: 'dots',
   size: 'small',
+  color: '#ffffff',
 });
 ```
 
-### 5. Automatic Promise Lifecycle (`wrap`)
-
+### 5. Dynamic Determinate Progress Bar & Ring
 ```ts
-const users = await spinner.wrap(
-  'fetch-users',
+const id = spinner.start({
+  type: 'progress-bar',
+  text: 'Uploading files...',
+  showProgressText: true,
+});
+
+// Dynamically update progress (0-100)
+spinner.setProgress(id, 35);
+spinner.setProgress(id, 75);
+spinner.setProgress(id, 100);
+
+// Transition into success
+spinner.success(id, 'Upload complete!');
+```
+
+### 6. Dynamic Live Updates
+Modify any property of an active spinner without destroying the DOM:
+```ts
+const id = spinner.start({ text: 'Starting step 1...' });
+
+// Update text dynamically
+spinner.setText(id, 'Step 2: Processing data...');
+
+// Update color and speed on the fly
+spinner.update(id, { color: '#10b981', speed: 'fast' });
+
+// Mark as complete
+spinner.success(id, 'All tasks done!');
+```
+
+### 7. Automatic Promise Lifecycle (`wrap`)
+```ts
+const data = await spinner.wrap(
+  'fetch-data',
   async () => {
-    const res = await fetch('/api/users');
+    const res = await fetch('/api/data');
     return res.json();
   },
   {
-    scope: 'container',
-    container: '#users-table',
-    type: 'skeleton',
-    skeleton: { variant: 'table', rows: 4 },
+    type: 'wave',
+    text: 'Syncing with cloud...',
+    color: '#06b6d4',
   }
 );
 ```
 
-### 6. Playful Interactive Mini-Game Loader
-
-Turn boring wait times into a delightful mini-game! Users can click/tap floating bubbles or press Space/Enter to pop bubbles and rack up combo scores while waiting:
-
+### 8. Interactive Mini-Game Loaders
+Keep users delighted during long waiting times (exports, AI pipelines, builds):
 ```ts
-const id = spinner.start({
-  id: 'export-job',
-  type: 'interactive',  // or 'bubble-pop'
-  text: 'Exporting 4K video... Pop bubbles while waiting! 🎈',
-  color: '#6366f1',
-  overlay: true,
-  preventInteraction: true, // Blocks underlying page, but keeps game arena clickable!
+// Tri-blade fidget spinner with inertia physics & RPM gauge
+spinner.start({
+  type: 'fidget-spinner',
+  text: 'Rendering 4K video... Spin while waiting!',
+  color: '#8b5cf6',
 });
 
-// Clean up when loading completes
-spinner.stop(id);
+// Retro arcade Pong mini-game
+spinner.start({
+  type: 'pong',
+  text: 'Compiling shaders... Play pong!',
+});
+
+// Cosmic clicker with combo shockwaves
+spinner.start({
+  type: 'tap-burst',
+  text: 'Provisioning cluster nodes...',
+});
+
+// Floating bubble popper
+spinner.start({
+  type: 'interactive', // or 'bubble-pop'
+  text: 'Downloading assets... Pop bubbles!',
+});
 ```
 
 ---
 
-## 🎭 Multiple Simultaneous Spinners
+## 🧩 Framework Integrations
 
-Independent spinners can run concurrently without interfering with each other:
+LumaSpinner is 100% framework-agnostic and works natively across all modern web frameworks with standard DOM refs and zero required CSS imports:
+
+### 1. Svelte (Svelte 4 & Svelte 5)
+
+```svelte
+<script>
+  import { onMount } from 'svelte';
+  import { spinner } from 'lumaspinner';
+
+  let containerRef;
+
+  // Option A: Automatic promise binding (auto-stops when finished)
+  onMount(async () => {
+    await spinner.wrap(fetchDashboardData, {
+      container: containerRef,
+      type: 'skeleton',
+      skeleton: { variant: 'card', shimmer: true }
+    });
+  });
+
+  // Option B: Svelte 5 runes ($effect)
+  let { loading = false } = $props();
+  $effect(() => {
+    if (loading && containerRef) {
+      const id = spinner.start({
+        container: containerRef,
+        type: 'dots',
+        text: 'Loading updates...'
+      });
+      return () => spinner.stop(id);
+    }
+  });
+</script>
+
+<div bind:this={containerRef} class="card">
+  <!-- Content mounts here -->
+</div>
+```
+
+### 2. React / Next.js (App & Pages Router)
+
+```tsx
+import { useEffect, useRef } from 'react';
+import { spinner } from 'lumaspinner';
+
+export function UserList({ isLoading }: { isLoading: boolean }) {
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isLoading && panelRef.current) {
+      const id = spinner.start({
+        container: panelRef.current,
+        type: 'skeleton',
+        skeleton: { variant: 'list', rows: 4, avatar: true }
+      });
+      return () => spinner.stop(id);
+    }
+  }, [isLoading]);
+
+  return <div ref={panelRef} className="user-panel" />;
+}
+```
+
+### 3. Vue 3 / Nuxt (Composition API)
+
+```vue
+<script setup>
+import { ref, onMounted } from 'vue';
+import { spinner } from 'lumaspinner';
+
+const container = ref(null);
+
+onMounted(async () => {
+  // Promise wrap: 0 manual cleanup needed
+  await spinner.wrap(fetchOrders, {
+    container: container.value,
+    type: 'bars',
+    text: 'Loading orders...'
+  });
+});
+</script>
+
+<template>
+  <div ref="container" class="orders-container"></div>
+</template>
+```
+
+### 4. Angular (Standalone Components & Signals)
 
 ```ts
-// Start 3 different loaders at the same time
-spinner.start({ id: 'users', container: '#users', type: 'skeleton' });
-spinner.start({ id: 'orders', container: '#orders', type: 'bars' });
-spinner.start({ id: 'profile', container: '#profile', type: 'ring' });
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+import { spinner } from 'lumaspinner';
 
-// Stop only users:
-spinner.stop('users'); // orders and profile remain actively loading!
+@Component({
+  selector: 'app-orders',
+  standalone: true,
+  template: `<div #card class="card-panel"></div>`
+})
+export class OrdersComponent implements OnInit {
+  @ViewChild('card', { static: true }) card!: ElementRef<HTMLDivElement>;
+
+  constructor(private http: HttpClient) {}
+
+  async ngOnInit() {
+    // ✨ ZERO ngOnDestroy needed! Automatically cleans up on completion:
+    await spinner.wrap(async () => {
+      return await firstValueFrom(this.http.get('/api/orders'));
+    }, {
+      container: this.card.nativeElement,
+      type: 'ring',
+      text: 'Loading orders...'
+    });
+  }
+}
+```
+
+### 5. SolidJS
+
+```tsx
+import { onMount } from 'solid-js';
+import { spinner } from 'lumaspinner';
+
+export function AnalyticsCard() {
+  let panelRef: HTMLDivElement | undefined;
+
+  onMount(async () => {
+    await spinner.wrap(fetchAnalytics, {
+      container: panelRef,
+      type: 'wave',
+      text: 'Crunching analytics...'
+    });
+  });
+
+  return <div ref={panelRef} class="analytics-card" />;
+}
 ```
 
 ---
 
-## 🛠️ Built-in Loaders (30 Styles + Mini-Game)
+## 🛠️ Built-in Loaders (30+ Styles)
 
-| Type | Name | Reference Inspiration | Best For |
-|---|---|---|---|
-| `ring` | Classic Circular Spinner | Standard Web & Material | Buttons, page loading, general HTTP requests |
-| `counter-ring` | Counter-Rotating Dual Ring ⚡ | Gyroscopic / Modern High-Tech | Dual concentric rings: outer spins anti-clockwise, inner spins clockwise |
-| `circle` | 12-Dot Circular Bounce Wave | SpinKit (Tobias Ahlin) | Circular wave animation, dashboard widgets, workspace loads |
-| `circular` | Material Circular Arc Dash | Google Material Design | Material UI applications, smooth expanding/contracting arcs |
-| `dots` | Sequential Bouncing Dots | Chat UI / Slack / iMessage | Chatbots, conversational UI, inline buttons |
-| `pulse` | Breathing Scale Shape | Heartbeat / Live beacon | Status indicators, live heartbeats, health checks |
-| `bars` | Audio Equalizer Bars | Streaming / Audio tools | File ingestion, batch processing, telemetry |
-| `wave` | Sine Wave Dots | Media / Creative apps | Media uploads, high-engagement consumer loading |
-| `orbit` | Planetary Satellite | Space / Cloud tech | Cloud syncing, cryptographic processing |
-| `square` | Geometric 3D Cube | CAD / Compiler | Code compilation, build tools, computational workflows |
-| `dual-ring` | Dual Opposing Ring | Loading.io & React-Spinners | Modern SaaS authentication, API handshakes |
-| `ripple` | Concentric Water Ripple | Material UI & Loading.io | Radar scans, Bluetooth pairing, device discovery |
-| `cube-grid` | 3x3 Wave Cube Grid | SpinKit (Tobias Ahlin) | Package building, 3D assets, data transformation |
-| `roller` | 8 Trailing Orbital Dots | CSS-Loaders & Loading.io | Payment processing, checkout, transaction verification |
-| `fading-circle` | 12-Segment Radial Clock | SpinKit & Apple iOS / macOS | Native-like web apps, OS settings, system updates |
-| `chasing-dots` | Dual Orbital Spheres | SpinKit & Flutter | Mobile web applications, notification syncing |
-| `hourglass` | Rotating Sand Hourglass | CSS-Loaders & Loading.io | Queue positions, ticket bookings, waiting rooms |
-| `heart` | Pulsing Cardiac Heartbeat | Health & Dating apps | Vital telemetry, patient portals, favorite actions |
-| `infinity` | Figure-8 Continuous Loop | Web3 & Loading.io | Blockchain streaming, websockets, infinite data |
-| `dna` | Double-Helix Strand | Biotech & Scientific tools | Genomic sequencing, ML model pipelines, analytics |
-| `wandering-cubes` | Corner-Orbiting Cubes | SpinKit (Tobias Ahlin) | Shard rebalancing, data migration, distributed storage |
-| `folding-cube` | 3D Perspective Origami Cube | SpinKit 3D | WebGL scenes, Three.js 3D assets, architectural CAD |
-| `atom` | 3 Orbital Electron Rings | React & Physics / AI | AI models, LLM inferences, React web apps, science |
-| `pacman` | Classic Arcade Chomping Dots | Retro Gaming & loaders.css | Gamified flows, consumer apps, playful loading screens |
-| `clock` | Analogue Hour & Minute Hands | Material & Scheduling apps | Appointment bookings, queue timers, flight searches |
-| `rotating-plane` | 3D Perspective Card Flip | SpinKit #1 (Tobias Ahlin) | 3D graphics rendering, minimalist card-flipping UI |
-| `newton-cradle` | Kinetic Momentum Pendulum | Physics & Executive tools | Cluster node sync, financial markets, data pipelines |
-| `hash` | Interlocking Hashtag # Grid | react-spinners (David Hu) | Social media hashtag analysis, cryptographic hashing |
-| `counter-ring` | Counter-Rotating Concentric Dual Ring ⚡ | Dual-direction gyroscope | High-tech dashboards, AI workflows, Web3 portals |
-| `progress-bar` | Linear Progress Bar (Gradient Sheen) 📊 | Modern Web (Vercel / Linear) | File uploads, downloads, installations, linear workflows |
-| `progress-ring` | Circular Progress Gauge (Radial Bloom) ⏱️ | Apple Watch / Dashboard Gauge | Cloud backup, health gauges, battery levels, radial metrics |
-| `progress-steps` | Segmented Pill Step Progress 🪜 | Stories / Multi-stage Wizards | Multi-stage workflows, verification pipelines, onboarding |
-| `interactive` | Bubble-Pop Mini-Game 🫧 | Interactive Game Loader | Long exports, AI workflows, uploads, playful wait screens |
-| `fidget-spinner` | Interactive Fidget Spinner 🌀 | Inertia physics & RPM meter | Long downloads, stress-relief screens, video renders |
-| `pong` | Interactive Mini-Pong Arcade 🏓 | Retro paddle & neon ball bounce | Code compilers, build tasks, shader processing |
-| `tap-burst` | Interactive Cosmic Tap Core 💥 | Shockwave ripples & combo bursts | Cloud provisioning, ML model inference, database sync |
-| `3d-cube` | 3D Isometric Wireframe Cube 🧊 | 3D Geometry / CAD / WebGL | 3D graphics rendering, CAD design, Three.js loading screens |
-| `3d-sphere` | 3D Orbital Sphere Gyroscope 🌐 | Aerospace / Geospatial | Coordinate calculation, cryptographic gyroscopes, global sync |
-| `3d-helix` | 3D Double-Helix DNA Strand 🧬 | Biotech / Genomics | DNA sequencing, scientific computing, molecular data pipelines |
-| `3d-pyramid` | 3D Tumbling Prism Pyramid 🔺 | Math / Computational Geometry | Mesh generation, geometric solvers, physics engines |
-| `3d-torus` | 3D Wireframe Torus Donut 🍩 | Quantum Physics / High-Tech | Particle accelerators, cybernetics, high-tech dashboards |
-| `skeleton` | Layout-Preserving Skeleton | Modern Web (GitHub/Twitter) | Tables, feeds, cards, profile screens |
+| Type | Name | Best For |
+|---|---|---|
+| `ring` | Classic Circular Spinner | Buttons, page loading, general HTTP requests |
+| `counter-ring` | Counter-Rotating Dual Ring ⚡ | Dual concentric rings (high-tech dashboards) |
+| `circle` | 12-Dot Circular Bounce Wave | Workspace loads, analytics panels |
+| `circular` | Material Circular Arc Dash | Material UI applications, smooth expanding arcs |
+| `dots` | Sequential Bouncing Dots | Chatbots, conversational UI, inline buttons |
+| `pulse` | Breathing Scale Shape | Status indicators, live heartbeats, health checks |
+| `bars` | Audio Equalizer Bars | File ingestion, batch processing, telemetry |
+| `wave` | Sine Wave Dots | Media uploads, consumer loading |
+| `orbit` | Planetary Satellite | Cloud syncing, cryptographic processing |
+| `square` | Geometric Cube | Code compilation, build tools |
+| `dual-ring` | Dual Opposing Ring | SaaS authentication, API handshakes |
+| `ripple` | Concentric Water Ripple | Radar scans, Bluetooth pairing, device discovery |
+| `cube-grid` | 3x3 Wave Cube Grid | Package building, 3D assets |
+| `roller` | 8 Trailing Orbital Dots | Payment processing, transaction verification |
+| `fading-circle` | 12-Segment Radial Clock | Native-like web apps, OS settings |
+| `chasing-dots` | Dual Orbital Spheres | Mobile web applications, notification syncing |
+| `hourglass` | Rotating Sand Hourglass | Queue positions, ticket bookings, waiting rooms |
+| `heart` | Pulsing Cardiac Heartbeat | Vital telemetry, patient portals |
+| `infinity` | Figure-8 Continuous Loop | Blockchain streaming, websockets, infinite data |
+| `dna` | Double-Helix Strand | Genomic sequencing, ML model pipelines |
+| `wandering-cubes` | Corner-Orbiting Cubes | Shard rebalancing, data migration |
+| `folding-cube` | 3D Perspective Origami Cube | WebGL scenes, Three.js 3D assets |
+| `atom` | 3 Orbital Electron Rings | AI models, LLM inferences, React apps |
+| `pacman` | Classic Arcade Chomping Dots | Gamified flows, playful screens |
+| `clock` | Analogue Hour & Minute Hands | Appointment bookings, queue timers |
+| `rotating-plane` | 3D Perspective Card Flip | 3D graphics rendering, card-flipping UI |
+| `newton-cradle` | Kinetic Momentum Pendulum | Cluster node sync, data pipelines |
+| `hash` | Interlocking Hashtag # Grid | Social media analysis, cryptographic hashing |
+| `progress-bar` | Linear Progress Bar (Gradient Sheen) 📊 | File uploads, downloads, installations |
+| `progress-ring` | Circular Progress Gauge (Radial Bloom) ⏱️ | Cloud backup, health gauges, battery levels |
+| `progress-steps` | Segmented Pill Step Progress 🪜 | Multi-stage wizards, verification pipelines |
+| `interactive` | Bubble-Pop Mini-Game 🫧 | Long exports, AI workflows, uploads |
+| `fidget-spinner` | Interactive Fidget Spinner 🌀 | Long downloads, stress-relief screens |
+| `pong` | Interactive Mini-Pong Arcade 🏓 | Code compilers, build tasks |
+| `tap-burst` | Interactive Cosmic Tap Core 💥 | Cloud provisioning, ML model inference |
+| `3d-cube` | 3D Isometric Wireframe Cube 🧊 | 3D CAD, WebGL, geometry loading |
+| `3d-sphere` | 3D Orbital Sphere Gyroscope 🌐 | Aerospace, coordinate calculation |
+| `3d-helix` | 3D Double-Helix DNA Strand 🧬 | Biotech, scientific computing |
+| `3d-pyramid` | 3D Tumbling Prism Pyramid 🔺 | Mesh generation, geometric solvers |
+| `3d-torus` | 3D Wireframe Torus Donut 🍩 | Cybernetics, particle accelerators |
+| `skeleton` | Layout-Preserving Skeleton | Tables, feeds, cards, profile screens |
 
 ---
 
@@ -242,220 +471,44 @@ spinner.stop('users'); // orders and profile remain actively loading!
 
 ---
 
-## 🎮 Interactive Mini-Game Loaders
+## 🔒 Content Security Policy (CSP)
 
-Turn agonizing waiting times (video exports, database migrations, package installations, AI prompts) into delightfully engaging mini-games! All interactive loaders feature zero external dependencies, keyboard & touch accessibility, and automatic idle fallback:
+LumaSpinner is built to run smoothly in banking and enterprise environments with strict `style-src 'self'`:
+
+- **CSSOM Constructable Stylesheets**: Uses `document.adoptedStyleSheets` where supported. Because no inline `<style>` strings are injected into the HTML, browsers do not flag CSP violations.
+- **Auto Nonce**: Automatically detects `<meta name="csp-nonce">`, `<script nonce="...">`, or `window.__CSP_NONCE__`.
+- **Global Nonce**: Or supply your nonce once at startup:
+  ```ts
+  spinner.configure({ nonce: 'server-generated-nonce' });
+  ```
+- **Manual CSS Opt-Out**: If your build pipeline uses precompiled stylesheets:
+  ```ts
+  import { spinner } from 'lumaspinner';
+  import 'lumaspinner/styles.css';
+
+  spinner.configure({ injectStyles: false });
+  ```
+
+---
+
+## 📖 Global Configuration
+
+Set application-wide defaults once at startup:
 
 ```ts
 import { spinner } from 'lumaspinner';
 
-// 1. Interactive Tri-Blade Fidget Spinner (Flick / RPM Physics)
-const id = spinner.start({
-  type: 'fidget-spinner',
-  text: 'Rendering 4K export...',
-});
-
-// 2. Interactive Retro Arcade Mini-Pong
-const pongId = spinner.start({
-  type: 'pong',
-  text: 'Compiling shaders...',
-});
-
-// 3. Interactive Cosmic Core Clicker (Shockwaves & 100% Supernova)
-const burstId = spinner.start({
-  type: 'tap-burst',
-  text: 'Provisioning cluster nodes...',
-});
-
-// 4. Interactive Bubble-Pop Game
-const bubbleId = spinner.start({
-  type: 'interactive',
-  text: 'Downloading assets...',
-});
-```
-
----
-
-## 📖 API Reference
-
-### `spinner.start(options?: SpinnerOptions): string`
-Starts a new spinner instance and returns its unique ID. Throws an error if an active spinner already exists with that ID.
-
-### `spinner.stop(id?: string): void`
-Stops the spinner. If an ID is provided, stops that specific spinner. If called without an ID, stops the most recently started active spinner (LIFO resolution).
-
-### `spinner.configure(config: GlobalConfig): void`
-Sets application-wide default settings once at startup. All subsequent `spinner.start()` calls inherit these options automatically:
-
-```ts
 spinner.configure({
-  type: 'dots',              // Default loader type ('ring' | 'dots' | 'pulse' | 'bars' | 'wave' | 'orbit' | 'square' | 'skeleton')
-  size: 'medium',            // Default size ('small' | 'medium' | 'large' | number)
-  speed: 'normal',           // Default speed ('fast' | 'normal' | 'slow')
-  color: '#6366f1',          // Default color
-  text: 'Loading...',        // Default text
-  duration: 3000,            // Auto-dismiss duration in ms (0 = manual stop)
-  delay: 200,                // Start delay in ms (prevents loader flash on quick responses)
-  theme: 'auto',             // 'auto' | 'dark' | 'light'
-  overlay: true,             // Enable backdrop overlay
-  preventInteraction: true,  // Block background clicks
-  nonce: 'my-nonce',         // Explicit CSP nonce (or auto-detected from DOM)
-  injectStyles: true,        // Auto-inject CSS (set false if importing CSS manually)
-});
-```
-
-### `spinner.getConfig(): Required<GlobalConfig>`
-Returns the current active global configuration.
-
-### `spinner.resetConfig(): void`
-Resets all global configuration back to the library defaults.
-
-### `spinner.update(idOrOptions: string | Partial<SpinnerOptions>, options?: Partial<SpinnerOptions>): void`
-Updates properties (such as `text`, `color`, `speed`) of a running spinner without recreating DOM nodes. If called without an ID, updates the active spinner.
-
-### `spinner.setText(idOrText: string, text?: string): void`
-Convenience helper to update visible and accessible screen-reader text. Can be called with just `spinner.setText('Loading...')` to update the active spinner.
-
-### `spinner.setType(idOrType: string | LoaderType, type?: LoaderType): void`
-Switches the active loader animation on the fly.
-
-### `spinner.setProgress(idOrValue: string | number, value?: number): void`
-Dynamically updates the determinate progress (0–100%) for linear progress bars (`progress-bar`), circular gauges (`progress-ring`), and segmented steps (`progress-steps`).
-Automatically switches indeterminate animations to smooth determinate transitions and updates live tabular percentage indicators:
-
-```ts
-const id = spinner.start({
-  type: 'progress-bar',
-  showProgressText: true,
-  text: 'Uploading video...',
-});
-
-// Update progress dynamically
-spinner.setProgress(id, 45); // Sets 45% fill and updates label to "45%"
-
-// Complete
-spinner.setProgress(id, 100);
-spinner.success(id, 'Upload complete!');
-```
-
-### `spinner.success(idOrMessage?: string, message?: string): void`
-Transitions the spinner to a success state with an optional message before cleanly removing it.
-
-### `spinner.error(idOrMessage?: string, message?: string): void`
-Transitions the spinner to an error state with an optional message before cleanly removing it.
-
-### `spinner.destroy(id?: string): void`
-Stops and immediately frees all memory, DOM nodes, and registry references.
-
-### `spinner.stopAll(): void`
-Stops all currently running spinners across all scopes.
-
-### `spinner.destroyAll(): void`
-Clears the entire registry and all managed instances.
-
-### `spinner.isActive(id: string): boolean`
-Returns `true` if a spinner with the given ID is actively mounted or queued.
-
-### `spinner.active(): SpinnerInstance[]`
-Returns an array of all active spinner instances.
-
-### `spinner.wrap<T>(id: string, fn: () => Promise<T>, options?: SpinnerOptions): Promise<T>`
-Wraps an asynchronous promise function. Guarantees that `spinner.stop(id)` is called whether the promise resolves or rejects.
-
-### `spinner.configure(config: GlobalConfig): void`
-Sets global defaults applied to all newly created spinners.
-
-### `spinner.on(event: SpinnerEvent, callback: SpinnerEventCallback): () => void`
-Subscribes to lifecycle events (`start`, `stop`, `update`, `destroy`, `success`, `error`). Returns an unsubscribe function.
-
-### `spinner.registerLoader(name: string, definition: LoaderDefinition): void`
-Registers a custom loader implementation.
-
----
-
-## 🎨 Styling: Colors & Overlays
-
-LumaSpinner gives you complete, flexible control over loader icon colors and backdrop overlay colors via JavaScript options or CSS variables:
-
-### 1. Customizing Loader Icon Color
-Pass any valid CSS color string (`hex`, `rgb`, `rgba`, `hsl`, or named color) in `options.color`:
-
-```ts
-// Vibrant red beating heart
-spinner.start({
-  type: 'heart',
-  color: '#ef4444',
-  text: 'Recording vital signs...',
-});
-
-// Glowing neon purple infinity loop
-spinner.start({
-  type: 'infinity',
-  color: '#8b5cf6',
-});
-
-// Dynamic color update on an active spinner
-spinner.update('my-spinner', { color: '#10b981' });
-```
-
-### 2. Customizing Backdrop Overlay Color
-Configure overlay background color using string shorthand, the `overlayColor` property, or an `OverlayOptions` object:
-
-```ts
-// Option A: String shorthand (enables overlay and sets backdrop color)
-spinner.start({
-  overlay: 'rgba(0, 0, 0, 0.85)',
-});
-
-// Option B: overlayColor property
-spinner.start({
-  overlayColor: '#0f172aee',
-  color: '#38bdf8',
-});
-
-// Option C: OverlayOptions object
-spinner.start({
-  overlay: {
-    enabled: true,
-    color: 'rgba(30, 41, 59, 0.75)',
-  },
-});
-```
-
-### 3. Application-Wide Color Defaults
-Set default brand colors once via `configure`:
-
-```ts
-spinner.configure({
+  type: 'ring',
+  size: 'medium',
+  speed: 'normal',
   color: '#6366f1',
-  overlayColor: 'rgba(15, 23, 42, 0.8)',
+  theme: 'auto',
+  overlay: true,
+  preventInteraction: false,
+  delay: 150,        // Avoids spinner flash on quick network responses
+  minDuration: 300,  // Prevents abrupt UI changes
 });
-```
-
----
-
-## 🎨 CSS Variables & Token Prefixing
-
-To guarantee zero class collisions and token clashes with existing projects and libraries, all design tokens, CSS variables, and DOM classes are strictly prefixed with `--luma-spinner-*` and `.luma-spinner-*` (while retaining `--luma-*` as backward-compatibility aliases):
-
-```css
-:root {
-  /* Primary Prefixed Design Tokens */
-  --luma-spinner-color: #6366f1;
-  --luma-spinner-size: 40px;
-  --luma-spinner-speed: 0.8s;
-  --luma-spinner-text-size: 14px;
-  --luma-spinner-text-color: #1e293b;
-  --luma-spinner-overlay-color: rgba(255, 255, 255, 0.8);
-  --luma-spinner-skeleton-color: #e2e8f0;
-  --luma-spinner-skeleton-highlight: #f8fafc;
-  --luma-spinner-z-index: 9999;
-
-  /* Backward-Compatibility Aliases (supported automatically) */
-  --luma-color: var(--luma-spinner-color);
-  --luma-size: var(--luma-spinner-size);
-  --luma-speed: var(--luma-spinner-speed);
-}
 ```
 
 ---
@@ -464,14 +517,13 @@ To guarantee zero class collisions and token clashes with existing projects and 
 
 LumaSpinner treats accessibility as a first-class requirement:
 
-1. **Role & Live Region**: Mounts with `role="status"` and `aria-live="polite"` by default.
-2. **`aria-busy`**: Toggles `aria-busy="true"` on the target container or `document.body` during loading, and restores `aria-busy="false"` on teardown.
-3. **Visually Hidden Text**: Automatically includes screen-reader-only labels (`.luma-sr-only`) so visually impaired users receive loading state announcements.
-4. **Reduced Motion**: Fully respects `@media (prefers-reduced-motion: reduce)`. Animations gracefully pause or switch to subtle static indicators.
+1. **Role & Live Region**: Mounts with `role="status"` and `aria-live="polite"`.
+2. **`aria-busy`**: Sets `aria-busy="true"` on the target container or `document.body` during loading, and restores `aria-busy="false"` on teardown.
+3. **Screen Readers**: Includes visually-hidden screen-reader text (`.luma-sr-only`).
+4. **Reduced Motion**: Fully respects `@media (prefers-reduced-motion: reduce)` by pausing spinning animations.
 
 ---
 
 ## 📄 License
 
-MIT © [Krishna Kumar](https://github.com/mekrishnaa)
-
+MIT © Krishna Kumar

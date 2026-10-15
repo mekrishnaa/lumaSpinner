@@ -17,6 +17,16 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./loaders": {
+      "import": {
+        "types": "./dist/loaders/index.d.ts",
+        "default": "./dist/loaders.js"
+      },
+      "require": {
+        "types": "./dist/loaders/index.d.cts",
+        "default": "./dist/loaders.cjs"
+      }
+    },
     "./styles.css": "./dist/styles.css"
   },
   "files": ["dist"],
@@ -62,14 +72,6 @@
   ],
   "author": "Krishna Kumar",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mekrishnaa/lumaSpinner.git"
-  },
-  "bugs": {
-    "url": "https://github.com/mekrishnaa/lumaSpinner/issues"
-  },
-  "homepage": "https://github.com/mekrishnaa/lumaSpinner#readme",
   "sideEffects": ["*.css", "./dist/styles.css"],
   "engines": { "node": ">=18.0.0" },
   "devDependencies": {

@@ -181,6 +181,7 @@ export interface LoaderDefinition {
   create(options: ResolvedSpinnerOptions): HTMLElement;
   update?(element: HTMLElement, options: ResolvedSpinnerOptions): void;
   destroy?(element: HTMLElement): void;
+  styles?: string;
 }
 
 export interface ResolvedSpinnerOptions extends Required<Omit<SpinnerOptions, 'container'>> {

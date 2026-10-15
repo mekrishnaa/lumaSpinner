@@ -65,7 +65,7 @@ tabBtns.forEach((btn) => {
     tabBtns.forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
     const tab = btn.getAttribute('data-tab');
-    ['vanilla', 'react', 'vue', 'angular'].forEach((t) => {
+    ['vanilla', 'react', 'vue', 'svelte', 'angular', 'solid'].forEach((t) => {
       const el = document.getElementById(`tab-content-${t}`);
       if (el) el.style.display = t === tab ? 'block' : 'none';
     });
@@ -122,7 +122,6 @@ window.addEventListener('keydown', (e) => {
 const LOADER_SNIPPETS: Partial<Record<LoaderType, { code: string; tips: string }>> = {
   ring: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start classic circular ring loader
 const id = spinner.start({
@@ -141,7 +140,6 @@ spinner.stop(id);`,
   },
   dots: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 3-dot pulsing loader
 const id = spinner.start({
@@ -159,7 +157,6 @@ spinner.stop(id);`,
   },
   pulse: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start breathing scale pulse loader
 const id = spinner.start({
@@ -177,7 +174,6 @@ spinner.stop(id);`,
   },
   bars: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 5-bar equalizer audio/streaming loader
 const id = spinner.start({
@@ -195,7 +191,6 @@ spinner.stop(id);`,
   },
   wave: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start sequential wave dots loader
 const id = spinner.start({
@@ -213,7 +208,6 @@ spinner.stop(id);`,
   },
   orbit: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start orbital planetary satellite loader
 const id = spinner.start({
@@ -231,7 +225,6 @@ spinner.stop(id);`,
   },
   square: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 3D geometric rotating cube loader
 const id = spinner.start({
@@ -249,7 +242,6 @@ spinner.stop(id);`,
   },
   skeleton: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start layout-preserving skeleton loader
 const id = spinner.start({
@@ -271,7 +263,6 @@ spinner.stop(id);`,
   },
   'dual-ring': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start dual-ring loader (Loading.io / React-Spinners style)
 const id = spinner.start({
@@ -289,7 +280,6 @@ spinner.stop(id);`,
   },
   ripple: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start concentric expanding ripple loader
 const id = spinner.start({
@@ -307,7 +297,6 @@ spinner.stop(id);`,
   },
   'cube-grid': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 3x3 cube grid loader (SpinKit Tobias Ahlin style)
 const id = spinner.start({
@@ -325,7 +314,6 @@ spinner.stop(id);`,
   },
   roller: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start roller loader (8 trailing dots with accelerated whip motion)
 const id = spinner.start({
@@ -343,7 +331,6 @@ spinner.stop(id);`,
   },
   'fading-circle': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 12-segment fading circle loader (iOS / macOS native style)
 const id = spinner.start({
@@ -362,7 +349,6 @@ spinner.stop(id);`,
   },
   'chasing-dots': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start chasing dots orbital loader (SpinKit / Flutter style)
 const id = spinner.start({
@@ -380,7 +366,6 @@ spinner.stop(id);`,
   },
   hourglass: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start rotating hourglass sand timer loader
 const id = spinner.start({
@@ -398,7 +383,6 @@ spinner.stop(id);`,
   },
   heart: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start pulsing heartbeat loader with custom icon color & overlay color
 const id = spinner.start({
@@ -417,7 +401,6 @@ spinner.stop(id);`,
   },
   infinity: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start continuous figure-8 infinity loop loader with revolving light beam
 const id = spinner.start({
@@ -436,7 +419,6 @@ spinner.stop(id);`,
   },
   dna: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start DNA double-helix oscillating strand loader
 const id = spinner.start({
@@ -454,7 +436,6 @@ spinner.stop(id);`,
   },
   'wandering-cubes': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start wandering cubes corner-orbit loader (SpinKit classic)
 const id = spinner.start({
@@ -472,7 +453,6 @@ spinner.stop(id);`,
   },
   'folding-cube': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 3D folding origami cube loader (SpinKit 3D classic)
 const id = spinner.start({
@@ -490,7 +470,6 @@ spinner.stop(id);`,
   },
   circle: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 12-dot circular bounce wave loader (SpinKit style)
 const id = spinner.start({
@@ -508,7 +487,6 @@ spinner.stop(id);`,
   },
   circular: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start Material Design circular arc dash spin loader
 const id = spinner.start({
@@ -526,7 +504,6 @@ spinner.stop(id);`,
   },
   atom: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start orbital electron atom loader (React / Physics / AI style)
 const id = spinner.start({
@@ -544,7 +521,6 @@ spinner.stop(id);`,
   },
   pacman: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start classic arcade Pacman chomping loader
 const id = spinner.start({
@@ -562,7 +538,6 @@ spinner.stop(id);`,
   },
   clock: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start analogue clock timer loader
 const id = spinner.start({
@@ -580,7 +555,6 @@ spinner.stop(id);`,
   },
   'rotating-plane': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 3D perspective flip card loader (SpinKit iconic classic)
 const id = spinner.start({
@@ -598,7 +572,6 @@ spinner.stop(id);`,
   },
   'newton-cradle': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start Newton cradle kinetic momentum loader
 const id = spinner.start({
@@ -616,7 +589,6 @@ spinner.stop(id);`,
   },
   hash: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start interlocking hashtag grid loader (react-spinners classic)
 const id = spinner.start({
@@ -634,7 +606,6 @@ spinner.stop(id);`,
   },
   interactive: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start interactive mini-game loader (Bubble Pop)
 const id = spinner.start({
@@ -654,7 +625,6 @@ spinner.stop(id);`,
   },
   'bubble-pop': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'interactive'
 const id = spinner.start({
@@ -666,7 +636,6 @@ const id = spinner.start({
   },
   'counter-ring': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start counter-rotating dual ring loader
 // Inner ring spins clockwise, outer ring spins anti-clockwise!
@@ -685,7 +654,6 @@ spinner.stop(id);`,
   },
   'concentric-rings': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'counter-ring'
 const id = spinner.start({
@@ -697,7 +665,6 @@ const id = spinner.start({
   },
   'dual-ring-reverse': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'counter-ring'
 const id = spinner.start({
@@ -709,7 +676,6 @@ const id = spinner.start({
   },
   'progress-bar': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start modern linear progress bar (Vercel/Linear style)
 const id = spinner.start({
@@ -735,7 +701,6 @@ const interval = setInterval(() => {
   },
   progress: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'progress-bar'
 const id = spinner.start({
@@ -749,7 +714,6 @@ const id = spinner.start({
   },
   'linear-progress': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'progress-bar'
 const id = spinner.start({
@@ -762,7 +726,6 @@ const id = spinner.start({
   },
   'progress-ring': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start modern Apple Watch style circular progress gauge
 const id = spinner.start({
@@ -784,7 +747,6 @@ spinner.success(id, 'Backup ready!');`,
   },
   'circular-progress': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'progress-ring'
 const id = spinner.start({
@@ -797,7 +759,6 @@ const id = spinner.start({
   },
   'ring-progress': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'progress-ring'
 const id = spinner.start({
@@ -810,7 +771,6 @@ const id = spinner.start({
   },
   'progress-steps': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start modern segmented pill step progress (Story / Tesla style)
 const id = spinner.start({
@@ -831,7 +791,6 @@ spinner.success(id, 'Setup complete!');`,
   },
   steps: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'progress-steps'
 const id = spinner.start({
@@ -844,7 +803,6 @@ const id = spinner.start({
   },
   'stepped-progress': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'progress-steps'
 const id = spinner.start({
@@ -857,7 +815,6 @@ const id = spinner.start({
   },
   'fidget-spinner': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start interactive tri-blade fidget spinner
 const id = spinner.start({
@@ -876,7 +833,6 @@ spinner.stop(id);`,
   },
   fidget: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'fidget-spinner'
 const id = spinner.start({
@@ -888,7 +844,6 @@ const id = spinner.start({
   },
   'spin-fidget': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'fidget-spinner'
 const id = spinner.start({
@@ -900,7 +855,6 @@ const id = spinner.start({
   },
   pong: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start retro arcade mini-pong rally loader
 const id = spinner.start({
@@ -920,7 +874,6 @@ spinner.stop(id);`,
   },
   'mini-pong': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'pong'
 const id = spinner.start({
@@ -932,7 +885,6 @@ const id = spinner.start({
   },
   'bounce-game': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'pong'
 const id = spinner.start({
@@ -944,7 +896,6 @@ const id = spinner.start({
   },
   'tap-burst': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start cosmic energy core tap clicker
 const id = spinner.start({
@@ -963,7 +914,6 @@ spinner.stop(id);`,
   },
   'click-blaster': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'tap-burst'
 const id = spinner.start({
@@ -975,7 +925,6 @@ const id = spinner.start({
   },
   'energy-orb': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Alias for 'tap-burst'
 const id = spinner.start({
@@ -987,7 +936,6 @@ const id = spinner.start({
   },
   '3d-cube': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 3D isometric cube loader with 6 illuminated faces
 const id = spinner.start({
@@ -1005,7 +953,6 @@ spinner.stop(id);`,
   },
   '3d-sphere': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 3D orbital sphere gyroscope loader
 const id = spinner.start({
@@ -1023,7 +970,6 @@ spinner.stop(id);`,
   },
   '3d-helix': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 3D spiraling DNA helix strand loader
 const id = spinner.start({
@@ -1041,7 +987,6 @@ spinner.stop(id);`,
   },
   '3d-pyramid': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 3D tumbling pyramid / tetrahedron loader
 const id = spinner.start({
@@ -1059,7 +1004,6 @@ spinner.stop(id);`,
   },
   '3d-torus': {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Start 3D tumbling wireframe torus donut loader
 const id = spinner.start({
@@ -1226,7 +1170,7 @@ LOADERS.forEach(({ type, title, desc }) => {
   btnCode.textContent = '</> Code';
   btnCode.onclick = () => {
     const item = LOADER_SNIPPETS[type] ?? {
-      code: `import { spinner } from 'lumaspinner';\nimport 'lumaspinner/styles.css';\n\nconst id = spinner.start({ type: '${type}' });`,
+      code: `import { spinner } from 'lumaspinner';\n\n\nconst id = spinner.start({ type: '${type}' });`,
       tips: `Implementation for ${title}`,
     };
     showCodeModal(`${title} Implementation`, item.code, item.tips);
@@ -1410,7 +1354,6 @@ btnCodePage?.addEventListener('click', () => {
   showCodeModal(
     'Whole-Screen Page Spinner with Duration',
     `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Trigger whole-screen spinner that automatically closes after given duration
 const id = spinner.start({
@@ -1452,7 +1395,6 @@ document.getElementById('btn-code-users')?.addEventListener('click', () => {
   showCodeModal(
     'Container Scope (User List Skeleton)',
     `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Confines the loader inside the #panel-users element
 spinner.start({
@@ -1496,7 +1438,6 @@ document.getElementById('btn-code-analytics')?.addEventListener('click', () => {
   showCodeModal(
     'Container Scope (Bars Loader)',
     `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 spinner.start({
   id: 'panel-analytics-spin',
@@ -1535,7 +1476,6 @@ document.getElementById('btn-code-orders')?.addEventListener('click', () => {
   showCodeModal(
     'Container Scope (Orbit Loader)',
     `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 spinner.start({
   id: 'panel-orders-spin',
@@ -1571,7 +1511,6 @@ document.getElementById('btn-stop-all')?.addEventListener('click', () => {
 const SKELETON_SNIPPETS: Record<SkeletonVariant, { code: string; tips: string }> = {
   card: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 spinner.start({
   id: 'article-card',
@@ -1589,7 +1528,6 @@ spinner.start({
   },
   list: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 spinner.start({
   id: 'feed-list',
@@ -1609,7 +1547,6 @@ spinner.start({
   },
   profile: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 spinner.start({
   id: 'profile-header',
@@ -1627,7 +1564,6 @@ spinner.start({
   },
   table: {
     code: `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 spinner.start({
   id: 'data-table',
@@ -1760,7 +1696,6 @@ document.getElementById('btn-code-inline-btn')?.addEventListener('click', () => 
   showCodeModal(
     'Inline Button Spinner',
     `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 const submitBtn = document.querySelector('#submit-button');
 const target = document.querySelector('#btn-spinner-slot');
@@ -1817,7 +1752,6 @@ document.getElementById('btn-code-inline-sync')?.addEventListener('click', () =>
   showCodeModal(
     'Inline Dots & Runtime Text Update',
     `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 const id = spinner.start({
   id: 'sync-dots',
@@ -1872,7 +1806,6 @@ document.getElementById('btn-code-wrap')?.addEventListener('click', () => {
   showCodeModal(
     'Promise Wrap API (Automatic Lifecycle)',
     `import { spinner } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // Automatically starts spinner before the async task,
 // and guarantees spinner.stop() is called whether it resolves OR rejects!
@@ -2000,7 +1933,6 @@ document.getElementById('btn-reset-config')?.addEventListener('click', () => {
 document.getElementById('btn-code-config')?.addEventListener('click', () => {
   const conf = getFormConfig();
   const code = `import { spinner, configure } from 'lumaspinner';
-import 'lumaspinner/styles.css';
 
 // 1. Configure global defaults once at app startup (e.g. main.ts / App.tsx)
 spinner.configure({

@@ -1,4 +1,5 @@
-import { LUMA_CSS_TEXT } from './css-content.js';
+import { LUMA_CORE_CSS } from './css-content.js';
+import { getLoaderStyles } from './loader-styles.js';
 
 export interface StyleInjectorOptions {
   /**
@@ -17,6 +18,7 @@ export interface StyleInjectorOptions {
 
 let injected = false;
 let adoptedSheet: CSSStyleSheet | null = null;
+const injectedLoaders = new Set<string>();
 
 /**
  * Automatically inspects the current DOM/environment for an active CSP nonce.
@@ -52,7 +54,7 @@ export function getAutoNonce(): string | undefined {
 }
 
 /**
- * Lazily injects LumaSpinner stylesheets into the DOM.
+ * Lazily injects LumaSpinner core stylesheets into the DOM.
  * Uses modern Constructable Stylesheets (CSSOM) where available to avoid inline-script/style CSP violations,
  * and falls back to a `<style>` element tagged with an auto-detected or configured CSP nonce.
  */
@@ -67,7 +69,6 @@ export function ensureStylesInjected(options?: StyleInjectorOptions): void {
   if (injected) return;
 
   // 1. Primary Modern Path: Constructable Stylesheets via CSSOM
-  // This bypasses CSP 'style-src' inline restrictions because no HTML text node is inserted.
   if (
     'adoptedStyleSheets' in document &&
     typeof CSSStyleSheet !== 'undefined'
@@ -76,7 +77,7 @@ export function ensureStylesInjected(options?: StyleInjectorOptions): void {
       if (!adoptedSheet) {
         adoptedSheet = new CSSStyleSheet();
         if (typeof (adoptedSheet as any).replaceSync === 'function') {
-          (adoptedSheet as any).replaceSync(LUMA_CSS_TEXT);
+          (adoptedSheet as any).replaceSync(LUMA_CORE_CSS);
         }
       }
 
@@ -99,12 +100,11 @@ export function ensureStylesInjected(options?: StyleInjectorOptions): void {
   try {
     const styleEl = document.createElement('style');
     styleEl.id = 'luma-spinner-styles';
-    styleEl.textContent = LUMA_CSS_TEXT;
+    styleEl.textContent = LUMA_CORE_CSS;
 
     const nonce = options?.nonce || getAutoNonce();
     if (nonce) {
       styleEl.setAttribute('nonce', nonce);
-      // Also set property if available
       try {
         (styleEl as any).nonce = nonce;
       } catch {
@@ -125,15 +125,80 @@ export function ensureStylesInjected(options?: StyleInjectorOptions): void {
 }
 
 /**
+ * On-demand injection for specific loader styles and keyframes.
+ * Injects only the small CSS block required by the active loader.
+ */
+export function ensureLoaderStylesInjected(
+  loaderName: string,
+  options?: StyleInjectorOptions,
+  customStyles?: string
+): void {
+  if (typeof document === 'undefined') return;
+  if (options?.injectStyles === false) return;
+
+  // Ensure base core styles exist
+  ensureStylesInjected(options);
+
+  if (injectedLoaders.has(loaderName)) return;
+
+  const styles = customStyles || getLoaderStyles(loaderName);
+  if (!styles || !styles.trim()) return;
+
+  injectedLoaders.add(loaderName);
+
+  // Modern Path: Constructable Stylesheets
+  if (
+    adoptedSheet &&
+    'adoptedStyleSheets' in document &&
+    document.adoptedStyleSheets.includes(adoptedSheet)
+  ) {
+    try {
+      const currentCss = (adoptedSheet as any).cssRules
+        ? Array.from((adoptedSheet as any).cssRules).map((r: any) => r.cssText).join('\n')
+        : LUMA_CORE_CSS;
+      (adoptedSheet as any).replaceSync(currentCss + '\n' + styles);
+      return;
+    } catch {
+      // Fallback
+    }
+  }
+
+  // Fallback: Append to the existing #luma-spinner-styles tag
+  const styleEl = document.getElementById('luma-spinner-styles') as HTMLStyleElement | null;
+  if (styleEl) {
+    styleEl.textContent = (styleEl.textContent || '') + '\n' + styles;
+  } else {
+    try {
+      const el = document.createElement('style');
+      el.id = `luma-spinner-styles-${loaderName}`;
+      el.dataset['lumaLoader'] = loaderName;
+      el.textContent = styles;
+      const nonce = options?.nonce || getAutoNonce();
+      if (nonce) {
+        el.setAttribute('nonce', nonce);
+      }
+      const targetHead = document.head || document.documentElement;
+      targetHead.appendChild(el);
+    } catch {
+      // Safe ignore
+    }
+  }
+}
+
+/**
  * Resets style injection state (primarily for test environments).
  */
 export function resetStyleInjection(): void {
   injected = false;
+  injectedLoaders.clear();
   if (typeof document !== 'undefined') {
     const existing = document.getElementById('luma-spinner-styles');
     if (existing) {
       existing.remove();
     }
+    const extraStyles = document.querySelectorAll('style[data-luma-loader]');
+    extraStyles.forEach((s) => s.remove());
+
     if (adoptedSheet && 'adoptedStyleSheets' in Document.prototype) {
       try {
         document.adoptedStyleSheets = document.adoptedStyleSheets.filter((s) => s !== adoptedSheet);
@@ -144,4 +209,3 @@ export function resetStyleInjection(): void {
   }
   adoptedSheet = null;
 }
-

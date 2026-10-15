@@ -5,12 +5,14 @@ import { mountContainerScope, unmountContainerScope } from '../scopes/container-
 import { mountInlineScope, unmountInlineScope } from '../scopes/inline-scope.js';
 import { getLoader } from '../loaders/loader-registry.js';
 import { log } from './configuration.js';
-import { ensureStylesInjected } from '../styles/injector.js';
+import { ensureStylesInjected, ensureLoaderStylesInjected } from '../styles/injector.js';
 
 export function mountSpinner(id: string, options: ResolvedSpinnerOptions): HTMLElement {
   ensureStylesInjected({ nonce: options.nonce, injectStyles: options.injectStyles });
 
   const loader = getLoader(options.type);
+  ensureLoaderStylesInjected(options.type, { nonce: options.nonce, injectStyles: options.injectStyles }, loader.styles);
+
   const loaderEl = loader.create(options);
   loaderEl.classList.add(`luma-spinner-loader--type-${options.type}`, `luma-loader--type-${options.type}`);
 
