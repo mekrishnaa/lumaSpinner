@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LumaSpinner — Interactive Playground & Showcase</title>
+  <link rel="icon" type="image/jpeg" href="./logo.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -62,6 +63,13 @@
       background: radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
       border-bottom: 1px solid var(--border);
     }
+    .heading{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
     .badge-pill {
       display: inline-flex;
       align-items: center;
@@ -76,6 +84,27 @@
       letter-spacing: 0.02em;
       margin-bottom: 20px;
     }
+    .hero-title-row {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .hero-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 0 25px rgba(99, 102, 241, 0.4), 0 6px 18px rgba(0, 0, 0, 0.4);
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+      flex-shrink: 0;
+    }
+    .hero-logo:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 0 35px rgba(168, 85, 247, 0.55), 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
     .hero h1 {
       font-size: clamp(2.5rem, 6vw, 4rem);
       font-weight: 800;
@@ -83,7 +112,8 @@
       background: linear-gradient(135deg, #fff 40%, #a5b4fc 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 14px;
+      margin: 0;
+      line-height: 1.15;
     }
     body.light .hero h1 {
       background: linear-gradient(135deg, #0f172a 40%, #4338ca 100%);
@@ -92,9 +122,10 @@
     }
     .hero p {
       max-width: 680px;
-      margin: 0 auto 28px;
+      margin: 14px auto 28px;
       font-size: 1.125rem;
       color: var(--text-muted);
+      line-height: 1.6;
     }
     .tech-badges {
       display: flex;
@@ -692,8 +723,13 @@
   </div>
 
   <header class="hero">
-    <div class="badge-pill">✨ Framework Agnostic · Zero Dependencies · Accessible</div>
-    <h1>LumaSpinner</h1>
+    <div class="heading">
+      <div class="hero-title-row">
+        <img class="hero-logo" src="./logo.jpg" alt="LumaSpinner Logo" />
+        <h1>LumaSpinner</h1>
+      </div>
+      <div class="badge-pill">✨ Framework Agnostic · Zero Dependencies · Accessible</div>
+    </div>
     <p>A reactive, platform-independent loading UI and skeleton library with independent ID management and multi-scope isolation.</p>
     <div class="tech-badges">
       <span class="tech-tag">⚡ 0 Runtime Deps</span>
@@ -1140,7 +1176,10 @@
   <div class="luma-modal-backdrop" id="setup-modal" style="display: none;">
     <div class="luma-modal-card luma-modal-card--lg">
       <div class="luma-modal-header">
-        <div class="luma-modal-title">🚀 Getting Started with LumaSpinner</div>
+        <div class="luma-modal-title" style="display: flex; align-items: center; gap: 10px;">
+          <img src="./logo.jpg" alt="LumaSpinner Logo" style="width: 26px; height: 26px; border-radius: 6px; object-fit: cover;" />
+          <span>🚀 Getting Started with LumaSpinner</span>
+        </div>
         <button class="luma-modal-close" id="setup-modal-close">&times;</button>
       </div>
       <div class="luma-modal-body">
