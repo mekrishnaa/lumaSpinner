@@ -1,3 +1,4 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 
@@ -13,13 +14,7 @@ const stateMap = new WeakMap<HTMLElement, InteractiveState>();
 
 const BUBBLE_ICONS = ['🫧', '🎈', '⭐', '💎', '🍬', '✨', '⚡'];
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '2s';
-    case 'slow': return '5s';
-    default: return '3.2s';
-  }
-}
+
 
 export const interactiveLoader: LoaderDefinition = {
   name: 'interactive',
@@ -34,8 +29,8 @@ export const interactiveLoader: LoaderDefinition = {
     root.className = 'luma-spinner-loader luma-spinner-loader--interactive luma-loader luma-loader--interactive';
     root.style.setProperty('--luma-spinner-color', options.color);
     root.style.setProperty('--luma-color', options.color);
-    root.style.setProperty('--luma-spinner-speed', getSpeed(options.speed));
-    root.style.setProperty('--luma-speed', getSpeed(options.speed));
+    root.style.setProperty('--luma-spinner-speed', getSpeed(options.speed, '2s', '5s', '3.2s'));
+    root.style.setProperty('--luma-speed', getSpeed(options.speed, '2s', '5s', '3.2s'));
     root.style.setProperty('--luma-spinner-arena-w', `${arenaWidth}px`);
     root.style.setProperty('--luma-arena-w', `${arenaWidth}px`);
     root.style.setProperty('--luma-spinner-arena-h', `${arenaHeight}px`);
@@ -230,8 +225,8 @@ export const interactiveLoader: LoaderDefinition = {
   update(element: HTMLElement, options: ResolvedSpinnerOptions): void {
     element.style.setProperty('--luma-spinner-color', options.color);
     element.style.setProperty('--luma-color', options.color);
-    element.style.setProperty('--luma-spinner-speed', getSpeed(options.speed));
-    element.style.setProperty('--luma-speed', getSpeed(options.speed));
+    element.style.setProperty('--luma-spinner-speed', getSpeed(options.speed, '2s', '5s', '3.2s'));
+    element.style.setProperty('--luma-speed', getSpeed(options.speed, '2s', '5s', '3.2s'));
   },
 
   destroy(element: HTMLElement): void {

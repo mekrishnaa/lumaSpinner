@@ -7,6 +7,9 @@ export default defineConfig({
   clean: true,
   treeshake: true,
   minify: true,
+  esbuildOptions(options) {
+    options.legalComments = 'none';
+  },
   outDir: 'dist',
 });
 

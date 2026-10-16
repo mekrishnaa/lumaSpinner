@@ -1,14 +1,9 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '0.8s';
-    case 'slow': return '2s';
-    default: return '1.2s';
-  }
-}
+
 
 const STEP_COUNT = 5;
 
@@ -18,7 +13,7 @@ export const progressStepsLoader: LoaderDefinition = {
     const size = getSizeValue(options.size);
     const container = document.createElement('div');
     container.className = 'luma-spinner-loader luma-spinner-loader--progress-steps luma-loader luma-loader--progress-steps';
-    setLoaderStyles(container, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(container, { size, color: options.color, speed: getSpeed(options.speed, '0.8s', '2s', '1.2s') });
     container.setAttribute('aria-hidden', 'true');
 
     const track = document.createElement('div');
@@ -65,7 +60,7 @@ export const progressStepsLoader: LoaderDefinition = {
   },
   update(element: HTMLElement, options: ResolvedSpinnerOptions): void {
     const size = getSizeValue(options.size);
-    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed, '0.8s', '2s', '1.2s') });
 
     if (options.progress !== undefined && options.progress >= 0) {
       const pct = Math.max(0, Math.min(100, options.progress));

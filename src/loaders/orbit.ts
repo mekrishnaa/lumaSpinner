@@ -1,14 +1,9 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '0.7s';
-    case 'slow': return '2s';
-    default: return '1.2s';
-  }
-}
+
 
 export const orbitLoader: LoaderDefinition = {
   name: 'orbit',
@@ -17,7 +12,7 @@ export const orbitLoader: LoaderDefinition = {
     const el = document.createElement('div');
     el.className = 'luma-spinner-loader luma-spinner-loader--orbit luma-loader luma-loader--orbit';
     el.setAttribute('aria-hidden', 'true');
-    setLoaderStyles(el, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(el, { size, color: options.color, speed: getSpeed(options.speed, '0.7s', '2s', '1.2s') });
     const core = document.createElement('div');
     core.className = 'luma-spinner-loader__orbit-core luma-loader__orbit-core';
     const satellite = document.createElement('div');
@@ -28,6 +23,6 @@ export const orbitLoader: LoaderDefinition = {
   },
   update(element: HTMLElement, options: ResolvedSpinnerOptions): void {
     const size = getSizeValue(options.size);
-    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed, '0.7s', '2s', '1.2s') });
   },
 };

@@ -14,14 +14,14 @@
 ## 🌟 Key Differentiators
 
 - 🚀 **Zero Runtime Dependencies** — Pure DOM APIs and hardware-accelerated CSS animations.
-- 🧩 **100% Framework Agnostic** — Native support for React, Angular, Vue, Svelte, Solid, or Vanilla JS.
+- 🧩 **100% Framework Agnostic** — Seamless in React, Angular, Vue, Svelte, Solid, or Vanilla JS.
 - 🔑 **Unique Identity Registry** — Every spinner is identified by a unique ID (`one ID = one active instance`). No accidental state clashes.
 - 🛡️ **Three Boundary Scopes**:
   - `page` — Viewport-level backdrop overlay and interaction blocking.
   - `container` — Elements are bounded strictly inside their parent container (never leaks out).
   - `inline` — No overlay; integrates seamlessly inside buttons, inputs, and badges.
 - 💀 **First-Class Skeletons** — 8 responsive skeleton layouts with smooth shimmer animations to prevent layout shifts.
-- 🎨 **8 Built-in Loaders** — Ring, Dots, Pulse, Bars, Wave, Orbit, Square, Skeleton.
+- 🎨 **40+ Built-in Loaders** — Classic spinners, 3D perspective geometry, progress gauges, and interactive mini-games.
 - ♿ **Accessible by Default** — Automatic `role="status"`, `aria-live="polite"`, `aria-busy="true/false"`, and `@media (prefers-reduced-motion: reduce)`.
 - 🔄 **Promise Helpers** — Built-in `spinner.wrap(...)` handles start/stop lifecycles automatically.
 
@@ -30,7 +30,30 @@
 ## 📦 Installation
 
 ```bash
+# npm
 npm install lumaspinner
+
+# pnpm
+pnpm add lumaspinner
+
+# yarn
+yarn add lumaspinner
+
+# bun
+bun add lumaspinner
+```
+
+### 🌐 CDN / Direct HTML Usage
+
+You can also use LumaSpinner directly in the browser without a build step:
+
+```html
+<script type="module">
+  import { spinner } from 'https://esm.sh/lumaspinner';
+
+  const id = spinner.start({ type: 'ring', text: 'Loading data...' });
+  setTimeout(() => spinner.stop(id), 3000);
+</script>
 ```
 
 ### ⚡ Zero-Config Quick Start (No CSS Import Needed!)
@@ -60,7 +83,7 @@ LumaSpinner is engineered to work out of the box in enterprise and banking envir
 - **Manual CSS Opt-Out**: If your build pipeline prefers static stylesheets:
   ```ts
   import { spinner } from 'lumaspinner';
-  import 'lumaspinner/styles.css'; // Optional manual import
+  import 'lumaspinner/styles.css'; // Optional manual CSS import
 
   spinner.configure({ injectStyles: false });
   ```
@@ -178,7 +201,77 @@ spinner.stop('users'); // orders and profile remain actively loading!
 
 ---
 
-## 🛠️ Built-in Loaders (30 Styles + Mini-Game)
+## 🧩 Framework Integration Guides
+
+### React
+```tsx
+import { useEffect } from 'react';
+import { spinner } from 'lumaspinner';
+
+export function UserList({ isLoading }: { isLoading: boolean }) {
+  useEffect(() => {
+    if (isLoading) {
+      const id = spinner.start({
+        scope: 'container',
+        container: '#user-list-card',
+        type: 'skeleton',
+        skeleton: { variant: 'list', rows: 4 },
+      });
+      return () => spinner.stop(id);
+    }
+  }, [isLoading]);
+
+  return <div id="user-list-card">...</div>;
+}
+```
+
+### Angular
+```ts
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { spinner } from 'lumaspinner';
+
+@Component({
+  selector: 'app-dashboard',
+  template: `<div id="stats-panel">...</div>`,
+})
+export class DashboardComponent implements OnInit, OnDestroy {
+  private loaderId?: string;
+
+  ngOnInit() {
+    this.loaderId = spinner.start({
+      scope: 'container',
+      container: '#stats-panel',
+      type: 'pulse',
+      color: '#6366f1',
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.loaderId) spinner.stop(this.loaderId);
+  }
+}
+```
+
+### Vue / Svelte
+```vue
+<script setup>
+import { onMounted, onUnmounted } from 'vue';
+import { spinner } from 'lumaspinner';
+
+let loaderId;
+onMounted(() => {
+  loaderId = spinner.start({ type: 'wave', text: 'Syncing...' });
+});
+
+onUnmounted(() => {
+  if (loaderId) spinner.stop(loaderId);
+});
+</script>
+```
+
+---
+
+## 🛠️ Built-in Loaders (40+ Styles & Mini-Games)
 
 | Type | Name | Reference Inspiration | Best For |
 |---|---|---|---|
@@ -210,7 +303,6 @@ spinner.stop('users'); // orders and profile remain actively loading!
 | `rotating-plane` | 3D Perspective Card Flip | SpinKit #1 (Tobias Ahlin) | 3D graphics rendering, minimalist card-flipping UI |
 | `newton-cradle` | Kinetic Momentum Pendulum | Physics & Executive tools | Cluster node sync, financial markets, data pipelines |
 | `hash` | Interlocking Hashtag # Grid | react-spinners (David Hu) | Social media hashtag analysis, cryptographic hashing |
-| `counter-ring` | Counter-Rotating Concentric Dual Ring ⚡ | Dual-direction gyroscope | High-tech dashboards, AI workflows, Web3 portals |
 | `progress-bar` | Linear Progress Bar (Gradient Sheen) 📊 | Modern Web (Vercel / Linear) | File uploads, downloads, installations, linear workflows |
 | `progress-ring` | Circular Progress Gauge (Radial Bloom) ⏱️ | Apple Watch / Dashboard Gauge | Cloud backup, health gauges, battery levels, radial metrics |
 | `progress-steps` | Segmented Pill Step Progress 🪜 | Stories / Multi-stage Wizards | Multi-stage workflows, verification pipelines, onboarding |

@@ -1,14 +1,9 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '1s';
-    case 'slow': return '3s';
-    default: return '2s';
-  }
-}
+
 
 export const clockLoader: LoaderDefinition = {
   name: 'clock',
@@ -16,7 +11,7 @@ export const clockLoader: LoaderDefinition = {
     const size = getSizeValue(options.size);
     const el = document.createElement('div');
     el.className = 'luma-spinner-loader luma-spinner-loader--clock luma-loader luma-loader--clock';
-    setLoaderStyles(el, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(el, { size, color: options.color, speed: getSpeed(options.speed, '1s', '3s', '2s') });
     el.setAttribute('aria-hidden', 'true');
 
     // Hour hand
@@ -38,6 +33,6 @@ export const clockLoader: LoaderDefinition = {
   },
   update(element: HTMLElement, options: ResolvedSpinnerOptions): void {
     const size = getSizeValue(options.size);
-    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed, '1s', '3s', '2s') });
   },
 };

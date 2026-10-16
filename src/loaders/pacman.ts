@@ -1,14 +1,9 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '0.5s';
-    case 'slow': return '1.2s';
-    default: return '0.8s';
-  }
-}
+
 
 export const pacmanLoader: LoaderDefinition = {
   name: 'pacman',
@@ -16,7 +11,7 @@ export const pacmanLoader: LoaderDefinition = {
     const size = getSizeValue(options.size);
     const el = document.createElement('div');
     el.className = 'luma-spinner-loader luma-spinner-loader--pacman luma-loader luma-loader--pacman';
-    setLoaderStyles(el, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(el, { size, color: options.color, speed: getSpeed(options.speed, '0.5s', '1.2s', '0.8s') });
     el.setAttribute('aria-hidden', 'true');
 
     // Pacman head/jaws
@@ -46,6 +41,6 @@ export const pacmanLoader: LoaderDefinition = {
   },
   update(element: HTMLElement, options: ResolvedSpinnerOptions): void {
     const size = getSizeValue(options.size);
-    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed, '0.5s', '1.2s', '0.8s') });
   },
 };

@@ -1,14 +1,9 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '1.2s';
-    case 'slow': return '3.2s';
-    default: return '2s';
-  }
-}
+
 
 export const helix3dLoader: LoaderDefinition = {
   name: '3d-helix',
@@ -16,7 +11,7 @@ export const helix3dLoader: LoaderDefinition = {
     const size = getSizeValue(options.size);
     const root = document.createElement('div');
     root.className = 'luma-spinner-loader luma-spinner-loader--3d-helix luma-loader luma-loader--3d-helix';
-    setLoaderStyles(root, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(root, { size, color: options.color, speed: getSpeed(options.speed, '1.2s', '3.2s', '2s') });
     root.setAttribute('aria-hidden', 'true');
 
     const scene = document.createElement('div');
@@ -40,7 +35,7 @@ export const helix3dLoader: LoaderDefinition = {
 
   update(element: HTMLElement, options: ResolvedSpinnerOptions): void {
     const size = getSizeValue(options.size);
-    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed, '1.2s', '3.2s', '2s') });
   },
 };
 

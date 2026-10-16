@@ -1,14 +1,9 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '0.7s';
-    case 'slow': return '1.6s';
-    default: return '1.1s';
-  }
-}
+
 
 export const fadingCircleLoader: LoaderDefinition = {
   name: 'fading-circle',
@@ -16,7 +11,7 @@ export const fadingCircleLoader: LoaderDefinition = {
     const size = getSizeValue(options.size);
     const el = document.createElement('div');
     el.className = 'luma-spinner-loader luma-spinner-loader--fading-circle luma-loader luma-loader--fading-circle';
-    setLoaderStyles(el, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(el, { size, color: options.color, speed: getSpeed(options.speed, '0.7s', '1.6s', '1.1s') });
     el.setAttribute('aria-hidden', 'true');
 
     for (let i = 0; i < 12; i++) {
@@ -37,6 +32,6 @@ export const fadingCircleLoader: LoaderDefinition = {
   },
   update(element: HTMLElement, options: ResolvedSpinnerOptions): void {
     const size = getSizeValue(options.size);
-    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed, '0.7s', '1.6s', '1.1s') });
   },
 };

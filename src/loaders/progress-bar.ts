@@ -1,14 +1,9 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '1s';
-    case 'slow': return '2.5s';
-    default: return '1.6s';
-  }
-}
+
 
 export const progressBarLoader: LoaderDefinition = {
   name: 'progress-bar',
@@ -16,7 +11,7 @@ export const progressBarLoader: LoaderDefinition = {
     const size = getSizeValue(options.size);
     const container = document.createElement('div');
     container.className = 'luma-spinner-loader luma-spinner-loader--progress-bar luma-loader luma-loader--progress-bar';
-    setLoaderStyles(container, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(container, { size, color: options.color, speed: getSpeed(options.speed, '1s', '2.5s', '1.6s') });
     container.setAttribute('aria-hidden', 'true');
 
     // Progress Track
@@ -57,7 +52,7 @@ export const progressBarLoader: LoaderDefinition = {
   },
   update(element: HTMLElement, options: ResolvedSpinnerOptions): void {
     const size = getSizeValue(options.size);
-    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed, '1s', '2.5s', '1.6s') });
 
     if (options.progress !== undefined && options.progress >= 0) {
       const pct = Math.max(0, Math.min(100, options.progress));

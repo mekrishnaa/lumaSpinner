@@ -14,7 +14,8 @@ function minifyCss(css) {
 }
 
 const rawCss = fs.readFileSync(cssPath, 'utf8');
-const minified = minifyCss(rawCss);
+const esbuild = require('esbuild');
+const minified = esbuild.transformSync(rawCss, { loader: 'css', minify: true }).code.trim();
 
 // Escape backticks and template interpolation
 const escaped = minified

@@ -1,14 +1,9 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '0.8s';
-    case 'slow': return '1.8s';
-    default: return '1.2s';
-  }
-}
+
 
 export const circleLoader: LoaderDefinition = {
   name: 'circle',

@@ -1,14 +1,9 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '1.5s';
-    case 'slow': return '4s';
-    default: return '2.6s';
-  }
-}
+
 
 export const cube3dLoader: LoaderDefinition = {
   name: '3d-cube',
@@ -16,7 +11,7 @@ export const cube3dLoader: LoaderDefinition = {
     const size = getSizeValue(options.size);
     const root = document.createElement('div');
     root.className = 'luma-spinner-loader luma-spinner-loader--3d-cube luma-loader luma-loader--3d-cube';
-    setLoaderStyles(root, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(root, { size, color: options.color, speed: getSpeed(options.speed, '1.5s', '4s', '2.6s') });
     root.setAttribute('aria-hidden', 'true');
 
     // 3D Perspective Scene
@@ -42,7 +37,7 @@ export const cube3dLoader: LoaderDefinition = {
 
   update(element: HTMLElement, options: ResolvedSpinnerOptions): void {
     const size = getSizeValue(options.size);
-    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed, '1.5s', '4s', '2.6s') });
   },
 };
 

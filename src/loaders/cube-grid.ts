@@ -1,14 +1,9 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '0.8s';
-    case 'slow': return '1.8s';
-    default: return '1.3s';
-  }
-}
+
 
 export const cubeGridLoader: LoaderDefinition = {
   name: 'cube-grid',
@@ -16,7 +11,7 @@ export const cubeGridLoader: LoaderDefinition = {
     const size = getSizeValue(options.size);
     const el = document.createElement('div');
     el.className = 'luma-spinner-loader luma-spinner-loader--cube-grid luma-loader luma-loader--cube-grid';
-    setLoaderStyles(el, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(el, { size, color: options.color, speed: getSpeed(options.speed, '0.8s', '1.8s', '1.3s') });
     el.setAttribute('aria-hidden', 'true');
 
     // 9 cubes with diagonal delays
@@ -31,6 +26,6 @@ export const cubeGridLoader: LoaderDefinition = {
   },
   update(element: HTMLElement, options: ResolvedSpinnerOptions): void {
     const size = getSizeValue(options.size);
-    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed, '0.8s', '1.8s', '1.3s') });
   },
 };

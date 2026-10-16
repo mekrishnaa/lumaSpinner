@@ -1,3 +1,4 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
@@ -14,13 +15,7 @@ interface FidgetState {
 
 const stateMap = new WeakMap<HTMLElement, FidgetState>();
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '1.5s';
-    case 'slow': return '4s';
-    default: return '2.5s';
-  }
-}
+
 
 export const fidgetSpinnerLoader: LoaderDefinition = {
   name: 'fidget-spinner',
@@ -32,7 +27,7 @@ export const fidgetSpinnerLoader: LoaderDefinition = {
 
     const root = document.createElement('div');
     root.className = 'luma-spinner-loader luma-spinner-loader--fidget-spinner luma-loader luma-loader--fidget-spinner';
-    setLoaderStyles(root, { size: rawSize, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(root, { size: rawSize, color: options.color, speed: getSpeed(options.speed, '1.5s', '4s', '2.5s') });
     root.style.setProperty('--luma-spinner-fidget-stage-size', `${stageSize}px`);
     root.style.setProperty('--luma-fidget-stage-size', `${stageSize}px`);
     root.style.setProperty('--luma-spinner-fidget-rotor-size', `${rotorSize}px`);
@@ -222,7 +217,7 @@ export const fidgetSpinnerLoader: LoaderDefinition = {
     const scale = rawSize / 36;
     const stageSize = Math.max(160, Math.min(260, Math.round(180 * scale)));
     const rotorSize = Math.max(120, Math.min(200, Math.round(140 * scale)));
-    setLoaderStyles(element, { size: rawSize, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(element, { size: rawSize, color: options.color, speed: getSpeed(options.speed, '1.5s', '4s', '2.5s') });
     element.style.setProperty('--luma-spinner-fidget-stage-size', `${stageSize}px`);
     element.style.setProperty('--luma-fidget-stage-size', `${stageSize}px`);
     element.style.setProperty('--luma-spinner-fidget-rotor-size', `${rotorSize}px`);

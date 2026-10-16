@@ -1,14 +1,9 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '1.2s';
-    case 'slow': return '2.6s';
-    default: return '1.8s';
-  }
-}
+
 
 export const hashLoader: LoaderDefinition = {
   name: 'hash',
@@ -16,7 +11,7 @@ export const hashLoader: LoaderDefinition = {
     const size = getSizeValue(options.size);
     const el = document.createElement('div');
     el.className = 'luma-spinner-loader luma-spinner-loader--hash luma-loader luma-loader--hash';
-    setLoaderStyles(el, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(el, { size, color: options.color, speed: getSpeed(options.speed, '1.2s', '2.6s', '1.8s') });
     el.setAttribute('aria-hidden', 'true');
 
     for (let i = 1; i <= 2; i++) {
@@ -29,6 +24,6 @@ export const hashLoader: LoaderDefinition = {
   },
   update(element: HTMLElement, options: ResolvedSpinnerOptions): void {
     const size = getSizeValue(options.size);
-    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(element, { size, color: options.color, speed: getSpeed(options.speed, '1.2s', '2.6s', '1.8s') });
   },
 };

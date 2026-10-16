@@ -1,3 +1,4 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
@@ -14,13 +15,7 @@ interface TapBurstState {
 
 const stateMap = new WeakMap<HTMLElement, TapBurstState>();
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '1.5s';
-    case 'slow': return '4s';
-    default: return '2.5s';
-  }
-}
+
 
 export const tapBurstLoader: LoaderDefinition = {
   name: 'tap-burst',
@@ -31,7 +26,7 @@ export const tapBurstLoader: LoaderDefinition = {
 
     const root = document.createElement('div');
     root.className = 'luma-spinner-loader luma-spinner-loader--tap-burst luma-loader luma-loader--tap-burst';
-    setLoaderStyles(root, { size: rawSize, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(root, { size: rawSize, color: options.color, speed: getSpeed(options.speed, '1.5s', '4s', '2.5s') });
     root.style.setProperty('--luma-spinner-tapburst-size', `${orbSize}px`);
     root.style.setProperty('--luma-tapburst-size', `${orbSize}px`);
     root.setAttribute('role', 'region');

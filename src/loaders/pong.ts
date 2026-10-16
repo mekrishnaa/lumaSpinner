@@ -1,3 +1,4 @@
+import { getSpeed } from '../utils/speed.js';
 import type { LoaderDefinition, ResolvedSpinnerOptions } from '../types/index.js';
 import { getSizeValue } from '../utils/size.js';
 import { setLoaderStyles } from '../utils/css-props.js';
@@ -17,13 +18,7 @@ interface PongState {
 
 const stateMap = new WeakMap<HTMLElement, PongState>();
 
-function getSpeed(speed: string): string {
-  switch (speed) {
-    case 'fast': return '1.5s';
-    case 'slow': return '4s';
-    default: return '2.5s';
-  }
-}
+
 
 export const pongLoader: LoaderDefinition = {
   name: 'pong',
@@ -38,7 +33,7 @@ export const pongLoader: LoaderDefinition = {
 
     const root = document.createElement('div');
     root.className = 'luma-spinner-loader luma-spinner-loader--pong luma-loader luma-loader--pong';
-    setLoaderStyles(root, { size: rawSize, color: options.color, speed: getSpeed(options.speed) });
+    setLoaderStyles(root, { size: rawSize, color: options.color, speed: getSpeed(options.speed, '1.5s', '4s', '2.5s') });
     root.style.setProperty('--luma-spinner-pong-w', `${arenaW}px`);
     root.style.setProperty('--luma-pong-w', `${arenaW}px`);
     root.style.setProperty('--luma-spinner-pong-h', `${arenaH}px`);
